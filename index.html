@@ -470,5 +470,176 @@ function cwSend() {
   }, 900);
 }
 </script>
+<!-- CHATFIELD WIDGET START -->
+<style>
+.cf-widget { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.cf-panel { width: 360px; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 48px rgba(13,31,53,.18), 0 2px 8px rgba(13,31,53,.08); display: none; flex-direction: column; background: #fff; border: 1px solid #eee; max-height: 580px; }
+.cf-panel.open { display: flex; }
+.cf-head { background: #0a1628; padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.cf-head-logo { width: 38px; height: 38px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; }
+.cf-head-title { font-size: 14px; font-weight: 600; color: #fff; }
+.cf-head-sub { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 1px; display: flex; align-items: center; gap: 4px; }
+.cf-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+.cf-close { margin-left: auto; background: rgba(255,255,255,.08); border: none; color: rgba(255,255,255,.6); cursor: pointer; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.cf-msgs { flex: 1; padding: 14px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f8f8f6; min-height: 260px; max-height: 320px; }
+.cf-row-bot { display: flex; align-items: flex-end; gap: 6px; align-self: flex-start; max-width: 88%; }
+.cf-row-user { align-self: flex-end; max-width: 88%; }
+.cf-avatar { width: 26px; height: 26px; border-radius: 8px; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.cf-bubble-bot { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px 14px 14px 14px; padding: 9px 12px; font-size: 13.5px; line-height: 1.55; color: #1e293b; font-family: 'Inter', sans-serif; }
+.cf-bubble-user { background: #0a1628; color: #fff; border-radius: 14px 4px 14px 14px; padding: 9px 12px; font-size: 13.5px; line-height: 1.55; font-family: 'Inter', sans-serif; }
+.cf-time { font-size: 10px; color: #94a3b8; margin-top: 3px; padding: 0 2px; }
+.cf-row-user .cf-time { text-align: right; }
+.cf-typing { display: flex; gap: 4px; padding: 4px 2px; align-items: center; }
+.cf-typing span { width: 5px; height: 5px; border-radius: 50%; background: #d4d2cc; animation: cfpulse 1.2s infinite; }
+.cf-typing span:nth-child(2) { animation-delay: .2s; }
+.cf-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes cfpulse { 0%,60%,100%{transform:translateY(0);opacity:.35} 30%{transform:translateY(-5px);opacity:1} }
+.cf-quick { padding: 8px 12px; display: flex; gap: 5px; flex-wrap: wrap; background: #fff; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+.cf-qbtn { font-size: 11.5px; padding: 5px 11px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8f8f6; color: #94a3b8; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
+.cf-qbtn:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+.cf-inp-row { display: flex; gap: 7px; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+.cf-inp { flex: 1; padding: 8px 13px; border: 1px solid #e2e8f0; border-radius: 18px; background: #f8f8f6; font-size: 13px; font-family: 'Inter', sans-serif; color: #1e293b; outline: none; }
+.cf-inp:focus { border-color: #2563eb; background: #fff; }
+.cf-send { width: 34px; height: 34px; border-radius: 50%; background: #0a1628; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cf-send:hover { background: #1a3550; }
+.cf-send svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cf-foot { padding: 6px; text-align: center; font-size: 10.5px; color: #d4d2cc; background: #fff; border-top: 1px solid #e2e8f0; }
+.cf-foot a { color: #2563eb; text-decoration: none; }
+.cf-fab-wrap { position: relative; }
+.cf-fab { width: 54px; height: 54px; border-radius: 50%; background: #0a1628; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(13,31,53,.28); }
+.cf-fab:hover { background: #1a3550; }
+.cf-fab svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.cf-notif { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #f5f4f0; }
+@media (max-width: 400px) { .cf-panel { width: calc(100vw - 2rem); } .cf-widget { right: 1rem; bottom: 1rem; } }
+</style>
+
+<div class="cf-widget">
+  <div class="cf-panel" id="cfPanel">
+    <div class="cf-head">
+      <div class="cf-head-logo">🤖</div>
+      <div style="flex:1">
+        <div class="cf-head-title">Chatfield Assistent</div>
+        <div class="cf-head-sub"><span class="cf-dot"></span> Online – antwortet sofort</div>
+      </div>
+      <button class="cf-close" onclick="cfToggle()">✕</button>
+    </div>
+    <div class="cf-msgs" id="cfMsgs">
+      <div class="cf-row-bot">
+        <div class="cf-avatar">🤖</div>
+        <div>
+          <div class="cf-bubble-bot">Hallo! 👋 Ich bin der Assistent von <strong>Chatfield</strong>. Wie kann ich helfen?</div>
+          <div class="cf-time">Jetzt</div>
+        </div>
+      </div>
+    </div>
+    <div class="cf-quick">
+      <button class="cf-qbtn" onclick="cfQ('Was macht Chatfield genau?')">Was ist Chatfield?</button>
+      <button class="cf-qbtn" onclick="cfQ('Was kostet ein Chatbot?')">Preise</button>
+      <button class="cf-qbtn" onclick="cfQ('Kann ich kostenlos testen?')">Gratis testen</button>
+      <button class="cf-qbtn" onclick="cfQ('Für welche Branchen eignet sich das?')">Branchen</button>
+    </div>
+    <div class="cf-inp-row">
+      <input class="cf-inp" id="cfInp" type="text" placeholder="Schreib eine Frage..." onkeydown="if(event.key==='Enter')cfSend()" />
+      <button class="cf-send" onclick="cfSend()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="cf-foot">Powered by <a href="https://chatfield-ai.ch" target="_blank">chatfield-ai.ch</a></div>
+  </div>
+  <div class="cf-fab-wrap">
+    <button class="cf-fab" id="cfFab" onclick="cfToggle()">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
+    <div class="cf-notif" id="cfNotif">1</div>
+  </div>
+</div>
+
+<script>
+const CF_SYSTEM = `Du bist der offizielle KI-Assistent von Chatfield – einem Schweizer Startup das massgeschneiderte KI-Chatbots für KMUs entwickelt. Antworte auf Deutsch, kurz (2-3 Sätze) und freundlich.
+
+ÜBER CHATFIELD:
+- Gegründet von Lev Hasler und Lino Olimpio aus dem Kanton Thurgau
+- KI-Assistenten die Kundenfragen automatisch beantworten – 24/7 auf der Website
+- Website: chatfield-ai.ch | Email: chatfield243@gmail.com
+
+PREISE:
+- Starter: CHF 99/Monat + CHF 500 Einrichtung
+- Professional: CHF 149/Monat + CHF 800 Einrichtung
+- PILOT: 3 KMUs können kostenlos testen – 30 Tage risikolos, kein Vertrag
+
+BRANCHEN: Fitnessstudios, Coiffeure, Garagen, Hotels, Beauty Studios, und viele mehr
+
+WICHTIG: Verweise immer auf chatfield243@gmail.com und ermutige zur kostenlosen Demo.`;
+
+let cfHistory = [], cfBusy = false, cfOpen = false;
+
+function cfToggle() {
+  cfOpen = !cfOpen;
+  document.getElementById('cfPanel').className = 'cf-panel' + (cfOpen ? ' open' : '');
+  document.getElementById('cfNotif').style.display = cfOpen ? 'none' : 'flex';
+  document.getElementById('cfFab').innerHTML = cfOpen
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+}
+
+function cfTime() {
+  return new Date().toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+}
+
+function cfAddMsg(text, role) {
+  const msgs = document.getElementById('cfMsgs');
+  const d = document.createElement('div');
+  if (role === 'bot') {
+    d.className = 'cf-row-bot';
+    d.innerHTML = `<div class="cf-avatar">🤖</div><div><div class="cf-bubble-bot">${text}</div><div class="cf-time">${cfTime()}</div></div>`;
+  } else {
+    d.className = 'cf-row-user';
+    d.innerHTML = `<div><div class="cf-bubble-user">${text}</div><div class="cf-time">${cfTime()}</div></div>`;
+  }
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function cfShowTyping() {
+  const msgs = document.getElementById('cfMsgs');
+  const d = document.createElement('div');
+  d.className = 'cf-row-bot'; d.id = 'cfTyping';
+  d.innerHTML = `<div class="cf-avatar">🤖</div><div><div class="cf-bubble-bot"><div class="cf-typing"><span></span><span></span><span></span></div></div></div>`;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function cfQ(text) { if (!cfOpen) cfToggle(); document.getElementById('cfInp').value = text; cfSend(); }
+
+async function cfSend() {
+  if (cfBusy) return;
+  const inp = document.getElementById('cfInp');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = ''; cfBusy = true;
+  if (!cfOpen) cfToggle();
+  cfAddMsg(text, 'user');
+  cfHistory.push({ role: 'user', content: text });
+  cfShowTyping();
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: CF_SYSTEM, messages: cfHistory })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Entschuldigung, bitte versuch es nochmal.';
+    document.getElementById('cfTyping')?.remove();
+    cfAddMsg(reply, 'bot');
+    cfHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    document.getElementById('cfTyping')?.remove();
+    cfAddMsg('Verbindungsfehler – bitte nochmal versuchen.', 'bot');
+  }
+  cfBusy = false;
+}
+</script>
+<!-- CHATFIELD WIDGET END -->
+
 </body>
 </html>
