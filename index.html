@@ -3,648 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chatfield – KI-Assistenten für Schweizer KMUs</title>
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZTX8QC9CC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-LZTX8QC9CC');
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Chatfield – KI-Assistent</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --navy: #0a1628;
-  --navy-2: #0f2040;
-  --blue: #2563eb;
-  --blue-light: #eff6ff;
-  --white: #ffffff;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-400: #94a3b8;
-  --gray-600: #475569;
-  --gray-800: #1e293b;
-  --green: #22c55e;
+  --bg: #f5f4f0; --navy: #0d1f35; --navy-mid: #1a3550;
+  --blue: #2461d4; --blue-soft: #e8f0fc; --white: #fff;
+  --gray-1: #f8f8f6; --gray-2: #eeede9; --gray-3: #d4d2cc;
+  --gray-5: #6b6860; --gray-8: #2a2926; --green: #22c55e; --red: #ef4444;
 }
-
-html { scroll-behavior: smooth; }
-body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--gray-800); line-height: 1.6; overflow-x: hidden; }
-
-/* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  background: rgba(10,22,40,0.96); backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  height: 60px; display: flex; align-items: center;
-  padding: 0 2rem; justify-content: space-between;
-}
-.logo { font-weight: 800; font-size: 20px; color: var(--white); text-decoration: none; letter-spacing: -0.5px; }
-.logo span { color: #60a5fa; }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
-.nav-links a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 500; transition: color 0.15s; }
-.nav-links a:hover { color: var(--white); }
-.nav-cta { background: var(--blue) !important; color: var(--white) !important; padding: 7px 16px; border-radius: 8px !important; }
-@media (max-width: 640px) { .nav-links { display: none; } }
-
-/* HERO */
-.hero {
-  min-height: 100svh; background: var(--navy);
-  display: flex; align-items: center; justify-content: center;
-  padding: 80px 1.5rem 4rem; position: relative; overflow: hidden; text-align: center;
-}
-.hero-glow {
-  position: absolute; width: 700px; height: 700px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 65%);
-  top: 50%; left: 50%; transform: translate(-50%, -60%); pointer-events: none;
-}
-.hero-inner { max-width: 720px; position: relative; z-index: 1; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.25);
-  color: #93c5fd; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 20px; margin-bottom: 1.75rem;
-}
-h1 { font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 800; color: var(--white); line-height: 1.08; margin-bottom: 1.25rem; letter-spacing: -0.03em; }
-h1 em { font-style: normal; color: #60a5fa; }
-.hero-sub { font-size: clamp(1rem, 2.5vw, 1.2rem); color: #94a3b8; max-width: 540px; margin: 0 auto 2.25rem; line-height: 1.75; }
-.hero-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-.btn { padding: 13px 24px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
-.btn-blue { background: var(--blue); color: var(--white); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
-.btn-blue:hover { background: #1d4ed8; transform: translateY(-1px); }
-.btn-ghost { background: rgba(255,255,255,0.07); color: var(--white); border: 1px solid rgba(255,255,255,0.12); }
-.btn-ghost:hover { background: rgba(255,255,255,0.11); }
-
-/* LOGOS BAR */
-.logos-bar { background: var(--navy-2); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; }
-.logos-label { font-size: 12px; color: #475569; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
-.logo-pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 14px; font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 500; }
-
-/* SECTIONS */
-section { padding: 5rem 1.5rem; }
-.container { max-width: 1080px; margin: 0 auto; }
-.eyebrow { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.75rem; }
-h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: var(--navy); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
-.section-sub { font-size: 1.05rem; color: var(--gray-600); max-width: 560px; line-height: 1.75; }
-
-/* HOW */
-.how { background: var(--gray-50); }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-.step { background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.75rem; }
-.step-n { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-.step h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
-.step p { font-size: 14px; color: var(--gray-600); line-height: 1.65; }
-
-/* FEATURES */
-.feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-.feat { border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.5rem; transition: border-color 0.15s, box-shadow 0.15s; }
-.feat:hover { border-color: var(--blue); box-shadow: 0 4px 24px rgba(37,99,235,0.07); }
-.feat-icon { width: 42px; height: 42px; background: var(--blue-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 1rem; }
-.feat h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
-.feat p { font-size: 13.5px; color: var(--gray-600); line-height: 1.65; }
-
-/* PILOT */
-.pilot { background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%); }
-.pilot h2 { color: var(--white); }
-.pilot .section-sub { color: #94a3b8; }
-.pilot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-.pilot-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.75rem; }
-.pilot-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
-.pilot-card p { font-size: 14px; color: #94a3b8; line-height: 1.65; }
-.pilot-badge { display: inline-block; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
-
-/* DEMO */
-.demo-sec { background: var(--navy); }
-.demo-sec h2 { color: var(--white); }
-.demo-sec .section-sub { color: #94a3b8; }
-.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; margin-top: 2.5rem; }
-@media (max-width: 768px) { .demo-grid { grid-template-columns: 1fr; } }
-.demo-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 12px; }
-.demo-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; color: #94a3b8; line-height: 1.6; }
-.demo-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-.chat-widget { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.4); }
-.cw-head { background: var(--navy-2); padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
-.cw-ava { width: 36px; height: 36px; border-radius: 10px; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.cw-name { font-size: 14px; font-weight: 600; color: var(--white); }
-.cw-status { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 1px; }
-.cw-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-.cw-msgs { padding: 14px; height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; }
-.cw-bot { align-self: flex-start; background: var(--white); border: 1px solid var(--gray-200); border-radius: 4px 14px 14px 14px; padding: 9px 13px; font-size: 13px; color: var(--gray-800); max-width: 85%; line-height: 1.55; }
-.cw-user { align-self: flex-end; background: var(--navy); color: var(--white); border-radius: 14px 4px 14px 14px; padding: 9px 13px; font-size: 13px; max-width: 85%; }
-.cw-chips { padding: 8px 12px; display: flex; gap: 5px; flex-wrap: wrap; background: var(--white); border-top: 1px solid var(--gray-100); }
-.cw-chip { font-size: 11.5px; padding: 4px 10px; border: 1px solid var(--gray-200); border-radius: 14px; background: var(--gray-50); color: var(--gray-600); cursor: pointer; font-family: 'Inter', sans-serif; }
-.cw-chip:hover { border-color: var(--blue); color: var(--blue); }
-.cw-inp { display: flex; gap: 6px; padding: 10px 12px; background: var(--white); border-top: 1px solid var(--gray-100); }
-.cw-inp input { flex: 1; padding: 8px 12px; border: 1px solid var(--gray-200); border-radius: 16px; background: var(--gray-50); font-size: 12.5px; outline: none; font-family: 'Inter', sans-serif; color: var(--gray-800); }
-.cw-inp input:focus { border-color: var(--blue); background: var(--white); }
-.cw-send { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); border: none; color: var(--white); cursor: pointer; font-size: 14px; flex-shrink: 0; }
-.typing { display: flex; gap: 4px; align-items: center; }
-.typing span { width: 5px; height: 5px; border-radius: 50%; background: #94a3b8; animation: bounce 1.2s infinite; }
-.typing span:nth-child(2) { animation-delay: .2s; }
-.typing span:nth-child(3) { animation-delay: .4s; }
-@keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:.35} 30%{transform:translateY(-5px);opacity:1} }
-
-/* PRICING */
-.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; max-width: 680px; }
-.price-card { border: 1px solid var(--gray-200); border-radius: 20px; padding: 2rem; position: relative; }
-.price-card.best { border-color: var(--blue); border-width: 2px; }
-.price-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--blue); color: var(--white); font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
-.price-name { font-size: 12px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
-.price-num { font-size: 2.75rem; font-weight: 800; color: var(--navy); line-height: 1; letter-spacing: -0.03em; }
-.price-per { font-size: 14px; color: var(--gray-400); }
-.price-setup { font-size: 13px; color: var(--gray-400); margin-top: 4px; margin-bottom: 1.5rem; }
-.price-hr { height: 1px; background: var(--gray-200); margin-bottom: 1.5rem; }
-.price-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.price-feats li { font-size: 14px; color: var(--gray-600); display: flex; align-items: center; gap: 8px; }
-.price-feats li::before { content: '✓'; color: var(--green); font-weight: 700; }
-.price-btn { display: block; text-align: center; margin-top: 1.75rem; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; transition: opacity 0.15s; }
-.price-btn-navy { background: var(--navy); color: var(--white); }
-.price-btn-outline { background: var(--gray-100); color: var(--navy); }
-.price-btn:hover { opacity: 0.82; }
-
-/* CONTACT */
-.contact-sec { background: var(--gray-50); }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-top: 2.5rem; }
-@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
-.contact-form { background: var(--white); border: 1px solid var(--gray-200); border-radius: 20px; padding: 2rem; }
-.fg { margin-bottom: 1.1rem; }
-.fg label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 5px; }
-.fg input, .fg select, .fg textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-200); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--gray-800); background: var(--gray-50); outline: none; transition: border-color 0.15s; appearance: none; }
-.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--blue); background: var(--white); }
-.fg textarea { height: 90px; resize: vertical; }
-.submit-btn { width: 100%; padding: 13px; background: var(--navy); color: var(--white); border: none; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
-.submit-btn:hover { opacity: 0.88; }
-.contact-info h3 { font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; }
-.contact-info p { color: var(--gray-600); line-height: 1.75; font-size: 15px; margin-bottom: 2rem; }
-.info-items { display: flex; flex-direction: column; gap: 1rem; }
-.info-item { display: flex; align-items: center; gap: 12px; }
-.info-icon { width: 40px; height: 40px; background: var(--blue-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.info-label { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em; }
-.info-val { font-size: 14px; color: var(--gray-600); margin-top: 1px; }
-
-/* FOOTER */
-footer { background: var(--navy); padding: 2rem 1.5rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
-footer p { color: #475569; font-size: 13px; }
-.logo-f { font-weight: 800; color: var(--white); font-size: 15px; }
-.logo-f span { color: #60a5fa; }
-
-@media (max-width: 480px) {
-  section { padding: 3.5rem 1.25rem; }
-  h1 { font-size: 2.2rem; }
-  .hero-btns { flex-direction: column; align-items: center; }
-  .btn { width: 100%; justify-content: center; }
-}
+body { font-family: 'Inter', sans-serif; background: var(--bg); min-height: 100vh; }
+.widget { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.panel { width: 370px; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 48px rgba(13,31,53,.18); display: none; flex-direction: column; background: var(--white); border: 1px solid var(--gray-2); max-height: 600px; }
+.panel.open { display: flex; }
+.head { background: var(--navy); padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.head-logo { width: 38px; height: 38px; border-radius: 10px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.head-logo svg { width: 19px; height: 19px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.head-title { font-size: 14px; font-weight: 600; color: var(--white); letter-spacing: -.2px; }
+.head-sub { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 1px; display: flex; align-items: center; gap: 4px; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.head-close { margin-left: auto; background: rgba(255,255,255,.08); border: none; color: rgba(255,255,255,.6); cursor: pointer; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background .15s; }
+.head-close:hover { background: rgba(255,255,255,.15); color: var(--white); }
+.msgs { flex: 1; padding: 14px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: var(--gray-1); min-height: 280px; max-height: 340px; }
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 2px; }
+.row-bot { display: flex; align-items: flex-end; gap: 6px; align-self: flex-start; max-width: 90%; }
+.row-user { align-self: flex-end; max-width: 88%; }
+.avatar { width: 26px; height: 26px; border-radius: 8px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 2px; }
+.avatar svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.bubble-bot { background: var(--white); border: 1px solid var(--gray-2); border-radius: 4px 14px 14px 14px; padding: 10px 13px; font-size: 13.5px; line-height: 1.6; color: var(--gray-8); }
+.bubble-user { background: var(--navy); color: var(--white); border-radius: 14px 4px 14px 14px; padding: 10px 13px; font-size: 13.5px; line-height: 1.6; }
+.msg-time { font-size: 10px; color: var(--gray-5); margin-top: 3px; padding: 0 2px; }
+.row-user .msg-time { text-align: right; }
+.typing-wrap { display: flex; gap: 4px; padding: 4px 2px; align-items: center; }
+.typing-wrap span { width: 5px; height: 5px; border-radius: 50%; background: var(--gray-3); animation: pulse 1.2s infinite; }
+.typing-wrap span:nth-child(2) { animation-delay: .2s; }
+.typing-wrap span:nth-child(3) { animation-delay: .4s; }
+@keyframes pulse { 0%,60%,100%{transform:translateY(0);opacity:.35} 30%{transform:translateY(-5px);opacity:1} }
+.quick { padding: 8px 12px; display: flex; gap: 5px; flex-wrap: wrap; background: var(--white); border-top: 1px solid var(--gray-2); flex-shrink: 0; }
+.qbtn { font-size: 11.5px; padding: 5px 11px; border: 1px solid var(--gray-2); border-radius: 16px; background: var(--gray-1); color: var(--gray-5); cursor: pointer; font-family: 'Inter', sans-serif; transition: all .15s; white-space: nowrap; }
+.qbtn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+.inp-row { display: flex; gap: 7px; padding: 10px 12px; background: var(--white); border-top: 1px solid var(--gray-2); flex-shrink: 0; }
+.inp { flex: 1; padding: 9px 13px; border: 1px solid var(--gray-2); border-radius: 18px; background: var(--gray-1); font-size: 13px; font-family: 'Inter', sans-serif; color: var(--gray-8); outline: none; transition: border-color .15s; }
+.inp::placeholder { color: var(--gray-3); }
+.inp:focus { border-color: var(--blue); background: var(--white); }
+.send { width: 34px; height: 34px; border-radius: 50%; background: var(--navy); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s; }
+.send:hover { background: var(--navy-mid); }
+.send svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.panel-foot { padding: 6px; text-align: center; font-size: 10.5px; color: var(--gray-3); background: var(--white); border-top: 1px solid var(--gray-2); }
+.panel-foot a { color: var(--blue); text-decoration: none; }
+.fab-wrap { position: relative; }
+.fab { width: 54px; height: 54px; border-radius: 50%; background: var(--navy); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(13,31,53,.28); transition: all .2s; }
+.fab:hover { background: var(--navy-mid); transform: scale(1.05); }
+.fab svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.notif { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); }
+@media (max-width: 420px) { .panel { width: calc(100vw - 2rem); } .widget { right: 1rem; bottom: 1rem; } }
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="logo">Chat<span>field</span></a>
-  <div class="nav-links">
-    <a href="#how">So funktionierts</a>
-    <a href="#pilot">Pilot</a>
-    <a href="#preise">Preise</a>
-    <a href="#kontakt" class="nav-cta">Demo anfragen</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">🇨🇭 Made in Switzerland</div>
-    <h1>Ihre Website verliert<br><em>täglich Anfragen.</em></h1>
-    <p class="hero-sub">Weil niemand um 20 Uhr antwortet. Chatfield löst das – mit einem KI-Assistenten der rund um die Uhr für Ihre Kunden da ist.</p>
-    <div class="hero-btns">
-      <a href="#kontakt" class="btn btn-blue">Kostenlose Demo anfragen →</a>
-      <a href="#how" class="btn btn-ghost">Wie es funktioniert</a>
-    </div>
-  </div>
-</section>
-
-<!-- LOGOS BAR -->
-<div class="logos-bar">
-  <span class="logos-label">Passend für</span>
-  <span class="logo-pill">🏋️ Fitnessstudios</span>
-  <span class="logo-pill">✂️ Coiffeure</span>
-  <span class="logo-pill">🚗 Garagen</span>
-  <span class="logo-pill">🏨 Hotels</span>
-  <span class="logo-pill">💅 Beauty Studios</span>
-</div>
-
-<!-- HOW -->
-<section class="how" id="how">
-  <div class="container">
-    <div class="eyebrow">So einfach geht's</div>
-    <h2>In 3 Schritten live</h2>
-    <p class="section-sub">Kein technisches Wissen nötig. Wir übernehmen alles.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">Schritt 1</div>
-        <h3>Demo ansehen</h3>
-        <p>Wir zeigen Ihnen in 10 Minuten per Video Call wie der Assistent für Ihr Unternehmen aussehen würde. Kostenlos und unverbindlich.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">Schritt 2</div>
-        <h3>Anpassen lassen</h3>
-        <p>Wir passen den Assistenten mit Ihren echten Infos an – Preise, Öffnungszeiten, Angebote. Alles auf Sie zugeschnitten.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">Schritt 3</div>
-        <h3>Live schalten</h3>
-        <p>Eine Zeile Code und der Assistent ist auf Ihrer Website. Ab sofort beantwortet er Kundenfragen automatisch, rund um die Uhr.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="container">
-    <div class="eyebrow">Features</div>
-    <h2>Alles was Ihr KMU braucht</h2>
-    <p class="section-sub">Einfach funktioniert's.</p>
-    <div class="feat-grid">
-      <div class="feat"><div class="feat-icon">⚡</div><h3>Sofortige Antworten</h3><p>Kunden bekommen sofort eine Antwort – auch nachts, am Wochenende oder an Feiertagen.</p></div>
-      <div class="feat"><div class="feat-icon">🎯</div><h3>Massgeschneidert</h3><p>Der Assistent kennt Ihr Unternehmen – Preise, Angebote, Öffnungszeiten und mehr.</p></div>
-      <div class="feat"><div class="feat-icon">🔗</div><h3>Einfache Integration</h3><p>Eine Zeile Code – und der Assistent erscheint auf Ihrer Website. Funktioniert überall.</p></div>
-      <div class="feat"><div class="feat-icon">📊</div><h3>Einblicke</h3><p>Sehen Sie was Kunden fragen und optimieren Sie Ihr Angebot entsprechend.</p></div>
-      <div class="feat"><div class="feat-icon">🗣️</div><h3>Mehrsprachig</h3><p>Deutsch, Englisch, Französisch – der Assistent spricht die Sprache Ihrer Kunden.</p></div>
-      <div class="feat"><div class="feat-icon">🔒</div><h3>Datenschutz</h3><p>DSGVO-konform. Ihre Kundendaten bleiben sicher.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- PILOT -->
-<section class="pilot" id="pilot">
-  <div class="container">
-    <div class="eyebrow" style="color:#60a5fa">Pilot-Programm</div>
-    <h2>Testen Sie es risikofrei</h2>
-    <p class="section-sub">Wir suchen 3 Schweizer KMUs die als erste unseren Assistenten auf ihrer Website testen möchten.</p>
-    <div class="pilot-grid">
-      <div class="pilot-card">
-        <div class="pilot-badge">✓ Noch verfügbar</div>
-        <h3>Kostenloser Setup</h3>
-        <p>Wir bauen den Assistenten komplett gratis auf Ihrer Website auf. Sie zahlen nur wenn Sie zufrieden sind.</p>
-      </div>
-      <div class="pilot-card">
-        <div class="pilot-badge">✓ Noch verfügbar</div>
-        <h3>Kein Risiko</h3>
-        <p>Kein Vertrag, keine Verpflichtung. Testen Sie 30 Tage lang – wenn Sie nicht begeistert sind, entfernen wir alles.</p>
-      </div>
-      <div class="pilot-card">
-        <div class="pilot-badge">✓ Noch verfügbar</div>
-        <h3>Persönliche Betreuung</h3>
-        <p>Wir sind direkt erreichbar und passen den Assistenten wöchentlich an Ihre Bedürfnisse an.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:2.5rem">
-      <a href="#kontakt" class="btn btn-blue">Jetzt Pilot-Platz sichern →</a>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section class="demo-sec" id="demo">
-  <div class="container">
-    <div class="eyebrow" style="color:#60a5fa">Live Demo</div>
-    <div class="demo-grid">
-      <div>
-        <h2>Sehen Sie es live in Aktion</h2>
-        <p class="section-sub">So sieht der Chatfield-Assistent auf Ihrer Website aus.</p>
-        <ul class="demo-list">
-          <li>Beantwortet Fragen zu Preisen, Terminen & Angeboten</li>
-          <li>Läuft vollautomatisch ohne Ihr Zutun</li>
-          <li>Passt sich Ihrem Design an</li>
-          <li>Jederzeit durch uns anpassbar</li>
-        </ul>
-        <div style="margin-top:2rem"><a href="#kontakt" class="btn btn-blue">Demo anfragen →</a></div>
-      </div>
-      <div class="chat-widget">
-        <div class="cw-head">
-          <div class="cw-ava">🏢</div>
-          <div>
-            <div class="cw-name">Ihr Assistent</div>
-            <div class="cw-status"><span class="cw-dot"></span> Online – antwortet sofort</div>
-          </div>
-        </div>
-        <div class="cw-msgs" id="cwMsgs">
-          <div class="cw-bot">Hallo! Wie kann ich Ihnen helfen? 👋</div>
-        </div>
-        <div class="cw-chips">
-          <div class="cw-chip" onclick="cwQ('Was kostet das?')">Preise</div>
-          <div class="cw-chip" onclick="cwQ('Öffnungszeiten?')">Öffnungszeiten</div>
-          <div class="cw-chip" onclick="cwQ('Demo buchen?')">Demo buchen</div>
-        </div>
-        <div class="cw-inp">
-          <input id="cwInp" placeholder="Nachricht..." onkeydown="if(event.key==='Enter')cwSend()" />
-          <button class="cw-send" onclick="cwSend()">→</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="preise">
-  <div class="container">
-    <div class="eyebrow">Preise</div>
-    <h2>Transparent und fair</h2>
-    <p class="section-sub">Keine versteckten Kosten. Kein Risiko.</p>
-    <div class="price-grid">
-      <div class="price-card">
-        <div class="price-name">Starter</div>
-        <div class="price-num">CHF 99<span class="price-per">/Mo</span></div>
-        <div class="price-setup">+ CHF 500 Einrichtung</div>
-        <div class="price-hr"></div>
-        <ul class="price-feats">
-          <li>KI-Assistent für Ihre Website</li>
-          <li>Bis 500 Gespräche/Monat</li>
-          <li>Deutsch & Englisch</li>
-          <li>Monatliche Updates</li>
-          <li>E-Mail Support</li>
-        </ul>
-        <a href="#kontakt" class="price-btn price-btn-outline">Demo anfragen</a>
-      </div>
-      <div class="price-card best">
-        <div class="price-tag">EMPFOHLEN</div>
-        <div class="price-name">Professional</div>
-        <div class="price-num">CHF 149<span class="price-per">/Mo</span></div>
-        <div class="price-setup">+ CHF 800 Einrichtung</div>
-        <div class="price-hr"></div>
-        <ul class="price-feats">
-          <li>Alles aus Starter</li>
-          <li>Unbegrenzte Gespräche</li>
-          <li>Alle Sprachen</li>
-          <li>Analytics Dashboard</li>
-          <li>Priority Support</li>
-          <li>Wöchentliche Updates</li>
-        </ul>
-        <a href="#kontakt" class="price-btn price-btn-navy">Demo anfragen</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact-sec" id="kontakt">
-  <div class="container">
-    <div class="eyebrow">Kontakt</div>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <h3>Bereit für Ihre kostenlose Demo?</h3>
-        <p>Schreiben Sie uns – wir melden uns innerhalb von 24 Stunden und zeigen Ihnen wie der Assistent für Ihr Unternehmen aussehen würde.</p>
-        <div class="info-items">
-          <div class="info-item">
-            <div class="info-icon">✉️</div>
-            <div><div class="info-label">Email</div><div class="info-val">chatfield243@gmail.com</div></div>
-          </div>
-          <div class="info-item">
-            <div class="info-icon">🌐</div>
-            <div><div class="info-label">Website</div><div class="info-val">chatfield-ai.ch</div></div>
-          </div>
-          <div class="info-item">
-            <div class="info-icon">📍</div>
-            <div><div class="info-label">Standort</div><div class="info-val">Thurgau, Schweiz 🇨🇭</div></div>
-          </div>
-          <div class="info-item">
-            <div class="info-icon">⚡</div>
-            <div><div class="info-label">Antwortzeit</div><div class="info-val">Innerhalb von 24 Stunden</div></div>
-          </div>
-        </div>
-      </div>
-      <form class="contact-form" action="https://formspree.io/f/mrpzjkeg" method="POST">
-        <div class="fg"><label>Ihr Name</label><input type="text" name="name" placeholder="Max Mustermann" required /></div>
-        <div class="fg"><label>Email</label><input type="email" name="email" placeholder="max@firma.ch" required /></div>
-        <div class="fg">
-          <label>Ihre Branche</label>
-          <select name="branche">
-            <option>Fitnessstudio</option>
-            <option>Coiffeur / Salon</option>
-            <option>Garage / Autowerkstatt</option>
-            <option>Hotel</option>
-            <option>Restaurant</option>
-            <option>Andere</option>
-          </select>
-        </div>
-        <div class="fg"><label>Nachricht (optional)</label><textarea name="nachricht" placeholder="Erzählen Sie uns kurz von Ihrem Unternehmen..."></textarea></div>
-        <button type="submit" class="submit-btn">Demo anfragen →</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p class="logo-f">Chat<span>field</span></p>
-  <p style="margin-top:8px">KI-Assistenten für Schweizer KMUs · chatfield-ai.ch · chatfield243@gmail.com</p>
-  <p style="margin-top:6px">© 2026 Chatfield · Lev & Lino · Thurgau, Schweiz</p>
-</footer>
-
-<script>
-const replies = {
-  'Was kostet das?': 'Unser Starter-Paket beginnt bei CHF 99/Monat zzgl. einmaliger Einrichtung. Im Pilot-Programm ist der Setup sogar gratis! 😊',
-  'Öffnungszeiten?': 'Als KI-Assistent bin ich rund um die Uhr für Sie da – 24/7. Das Chatfield-Team erreichen Sie unter chatfield243@gmail.com.',
-  'Demo buchen?': 'Gerne! Füllen Sie das Kontaktformular aus – wir melden uns innerhalb von 24 Stunden. Komplett kostenlos und unverbindlich. 🚀'
-};
-const msgs = document.getElementById('cwMsgs');
-function cwQ(t) { document.getElementById('cwInp').value = t; cwSend(); }
-function cwSend() {
-  const inp = document.getElementById('cwInp');
-  const t = inp.value.trim(); if (!t) return; inp.value = '';
-  const u = document.createElement('div'); u.className = 'cw-user'; u.textContent = t; msgs.appendChild(u);
-  msgs.scrollTop = msgs.scrollHeight;
-  const l = document.createElement('div'); l.className = 'cw-bot'; l.id = 'typing';
-  l.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  msgs.appendChild(l); msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(() => {
-    document.getElementById('typing')?.remove();
-    const b = document.createElement('div'); b.className = 'cw-bot';
-    b.textContent = replies[t] || 'Gute Frage! Schreiben Sie uns unter chatfield243@gmail.com – wir helfen Ihnen gerne weiter. 😊';
-    msgs.appendChild(b); msgs.scrollTop = msgs.scrollHeight;
-  }, 900);
-}
-</script>
-<!-- CHATFIELD WIDGET START -->
-<style>
-.cf-widget { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-.cf-panel { width: 360px; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 48px rgba(13,31,53,.18), 0 2px 8px rgba(13,31,53,.08); display: none; flex-direction: column; background: #fff; border: 1px solid #eee; max-height: 580px; }
-.cf-panel.open { display: flex; }
-.cf-head { background: #0a1628; padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.cf-head-logo { width: 38px; height: 38px; border-radius: 10px; background: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; }
-.cf-head-title { font-size: 14px; font-weight: 600; color: #fff; }
-.cf-head-sub { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 1px; display: flex; align-items: center; gap: 4px; }
-.cf-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
-.cf-close { margin-left: auto; background: rgba(255,255,255,.08); border: none; color: rgba(255,255,255,.6); cursor: pointer; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.cf-msgs { flex: 1; padding: 14px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f8f8f6; min-height: 260px; max-height: 320px; }
-.cf-row-bot { display: flex; align-items: flex-end; gap: 6px; align-self: flex-start; max-width: 88%; }
-.cf-row-user { align-self: flex-end; max-width: 88%; }
-.cf-avatar { width: 26px; height: 26px; border-radius: 8px; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
-.cf-bubble-bot { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px 14px 14px 14px; padding: 9px 12px; font-size: 13.5px; line-height: 1.55; color: #1e293b; font-family: 'Inter', sans-serif; }
-.cf-bubble-user { background: #0a1628; color: #fff; border-radius: 14px 4px 14px 14px; padding: 9px 12px; font-size: 13.5px; line-height: 1.55; font-family: 'Inter', sans-serif; }
-.cf-time { font-size: 10px; color: #94a3b8; margin-top: 3px; padding: 0 2px; }
-.cf-row-user .cf-time { text-align: right; }
-.cf-typing { display: flex; gap: 4px; padding: 4px 2px; align-items: center; }
-.cf-typing span { width: 5px; height: 5px; border-radius: 50%; background: #d4d2cc; animation: cfpulse 1.2s infinite; }
-.cf-typing span:nth-child(2) { animation-delay: .2s; }
-.cf-typing span:nth-child(3) { animation-delay: .4s; }
-@keyframes cfpulse { 0%,60%,100%{transform:translateY(0);opacity:.35} 30%{transform:translateY(-5px);opacity:1} }
-.cf-quick { padding: 8px 12px; display: flex; gap: 5px; flex-wrap: wrap; background: #fff; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
-.cf-qbtn { font-size: 11.5px; padding: 5px 11px; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8f8f6; color: #94a3b8; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
-.cf-qbtn:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
-.cf-inp-row { display: flex; gap: 7px; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
-.cf-inp { flex: 1; padding: 8px 13px; border: 1px solid #e2e8f0; border-radius: 18px; background: #f8f8f6; font-size: 13px; font-family: 'Inter', sans-serif; color: #1e293b; outline: none; }
-.cf-inp:focus { border-color: #2563eb; background: #fff; }
-.cf-send { width: 34px; height: 34px; border-radius: 50%; background: #0a1628; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.cf-send:hover { background: #1a3550; }
-.cf-send svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.cf-foot { padding: 6px; text-align: center; font-size: 10.5px; color: #d4d2cc; background: #fff; border-top: 1px solid #e2e8f0; }
-.cf-foot a { color: #2563eb; text-decoration: none; }
-.cf-fab-wrap { position: relative; }
-.cf-fab { width: 54px; height: 54px; border-radius: 50%; background: #0a1628; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(13,31,53,.28); }
-.cf-fab:hover { background: #1a3550; }
-.cf-fab svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.cf-notif { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #f5f4f0; }
-@media (max-width: 400px) { .cf-panel { width: calc(100vw - 2rem); } .cf-widget { right: 1rem; bottom: 1rem; } }
-</style>
-
-<div class="cf-widget">
-  <div class="cf-panel" id="cfPanel">
-    <div class="cf-head">
-      <div class="cf-head-logo">🤖</div>
+<div class="widget">
+  <div class="panel" id="panel">
+    <div class="head">
+      <div class="head-logo"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
       <div style="flex:1">
-        <div class="cf-head-title">Chatfield Assistent</div>
-        <div class="cf-head-sub"><span class="cf-dot"></span> Online – antwortet sofort</div>
+        <div class="head-title">Chatfield Assistent</div>
+        <div class="head-sub"><span class="status-dot"></span> Online</div>
       </div>
-      <button class="cf-close" onclick="cfToggle()">✕</button>
+      <button class="head-close" onclick="toggle()" aria-label="Schliessen">&#10005;</button>
     </div>
-    <div class="cf-msgs" id="cfMsgs">
-      <div class="cf-row-bot">
-        <div class="cf-avatar">🤖</div>
+
+    <div class="msgs" id="msgs">
+      <div class="row-bot">
+        <div class="avatar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <div>
-          <div class="cf-bubble-bot">Hallo! 👋 Ich bin der Assistent von <strong>Chatfield</strong>. Wie kann ich helfen?</div>
-          <div class="cf-time">Jetzt</div>
+          <div class="bubble-bot">Guten Tag. Ich bin der Assistent von Chatfield. Ich beantworte Fragen zu unseren KI-Assistenten f&uuml;r Schweizer Unternehmen. Was m&ouml;chten Sie wissen?</div>
+          <div class="msg-time">Jetzt</div>
         </div>
       </div>
     </div>
-    <div class="cf-quick">
-      <button class="cf-qbtn" onclick="cfQ('Was macht Chatfield genau?')">Was ist Chatfield?</button>
-      <button class="cf-qbtn" onclick="cfQ('Was kostet ein Chatbot?')">Preise</button>
-      <button class="cf-qbtn" onclick="cfQ('Kann ich kostenlos testen?')">Gratis testen</button>
-      <button class="cf-qbtn" onclick="cfQ('Für welche Branchen eignet sich das?')">Branchen</button>
+
+    <div class="quick">
+      <button class="qbtn" onclick="q('Was macht Chatfield genau?')">Was ist Chatfield</button>
+      <button class="qbtn" onclick="q('Was kostet das?')">Preise</button>
+      <button class="qbtn" onclick="q('Wie funktioniert die Integration auf meiner Website?')">Integration</button>
+      <button class="qbtn" onclick="q('Was ist das Pilot-Programm?')">Gratis testen</button>
+      <button class="qbtn" onclick="q('F&uuml;r welche Branchen eignet sich das?')">Branchen</button>
+      <button class="qbtn" onclick="q('Wie sieht es mit Datenschutz aus?')">Datenschutz</button>
+      <button class="qbtn" onclick="q('Wie schnell ist der Bot live?')">Ablauf</button>
+      <button class="qbtn" onclick="q('Wer steckt hinter Chatfield?')">&Uuml;ber uns</button>
     </div>
-    <div class="cf-inp-row">
-      <input class="cf-inp" id="cfInp" type="text" placeholder="Schreib eine Frage..." onkeydown="if(event.key==='Enter')cfSend()" />
-      <button class="cf-send" onclick="cfSend()">
+
+    <div class="inp-row">
+      <input class="inp" id="inp" type="text" placeholder="Ihre Frage..." onkeydown="if(event.key==='Enter')send()" />
+      <button class="send" onclick="send()" aria-label="Senden">
         <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
-    <div class="cf-foot">Powered by <a href="https://chatfield-ai.ch" target="_blank">chatfield-ai.ch</a></div>
+    <div class="panel-foot">Powered by <a href="https://chatfield-ai.ch" target="_blank">chatfield-ai.ch</a></div>
   </div>
-  <div class="cf-fab-wrap">
-    <button class="cf-fab" id="cfFab" onclick="cfToggle()">
+
+  <div class="fab-wrap">
+    <button class="fab" id="fab" onclick="toggle()" aria-label="Chat oeffnen">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
-    <div class="cf-notif" id="cfNotif">1</div>
+    <div class="notif" id="notif">1</div>
   </div>
 </div>
 
 <script>
-const CF_SYSTEM = `Du bist der Assistent von Chatfield. Antworte sachlich, kurz und ohne Emojis. Maximal 3 Sätze. Keine Floskeln wie "Gerne!" oder "Super Frage!". Direkt auf die Frage antworten, Sie-Form.
+let history = [], busy = false, open = false;
+const msgsEl = document.getElementById('msgs');
+const panelEl = document.getElementById('panel');
+const BOT_SVG = '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
 
-ÜBER CHATFIELD:
-- Schweizer Startup von Lev Hasler und Lino Olimpio, Kanton Thurgau
-- Wir bauen KI-Chatbots für KMUs die Kundenfragen automatisch beantworten, 24/7
-- Website: chatfield-ai.ch | Email: lev@chatfield-ai.ch
-
-PREISE:
-- Starter: CHF 99/Monat + CHF 500 Einrichtung (bis 500 Gespräche/Monat)
-- Professional: CHF 149/Monat + CHF 800 Einrichtung (unbegrenzte Gespräche)
-- Pilot: 3 KMUs können aktuell kostenlos testen, 30 Tage, kein Vertrag
-
-ABLAUF:
-- Erst eine kostenlose Demo per Video Call
-- Dann bauen wir den Chatbot mit echten Infos der Firma auf
-- Eine Zeile Code auf der Website und er ist live
-
-BRANCHEN: Fitnessstudios, Coiffeure, Garagen, Hotels, Beauty Studios, Fahrschulen, Restaurants
-
-WICHTIG: Nie erfinden was der Bot kann. Bei Terminen oder Preisen immer auf direkte Anfrage per Email verweisen.`;`;
-
-let cfHistory = [], cfBusy = false, cfOpen = false;
-
-function cfToggle() {
-  cfOpen = !cfOpen;
-  document.getElementById('cfPanel').className = 'cf-panel' + (cfOpen ? ' open' : '');
-  document.getElementById('cfNotif').style.display = cfOpen ? 'none' : 'flex';
-  document.getElementById('cfFab').innerHTML = cfOpen
+function toggle() {
+  open = !open;
+  panelEl.className = 'panel' + (open ? ' open' : '');
+  document.getElementById('notif').style.display = open ? 'none' : 'flex';
+  document.getElementById('fab').innerHTML = open
     ? '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    : BOT_SVG;
 }
 
-function cfTime() {
-  return new Date().toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-}
+function time() { return new Date().toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' }); }
 
-function cfAddMsg(text, role) {
-  const msgs = document.getElementById('cfMsgs');
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+function addMsg(text, role) {
   const d = document.createElement('div');
   if (role === 'bot') {
-    d.className = 'cf-row-bot';
-    d.innerHTML = `<div class="cf-avatar">🤖</div><div><div class="cf-bubble-bot">${text}</div><div class="cf-time">${cfTime()}</div></div>`;
+    d.className = 'row-bot';
+    d.innerHTML = '<div class="avatar">' + BOT_SVG + '</div><div><div class="bubble-bot">' + esc(text) + '</div><div class="msg-time">' + time() + '</div></div>';
   } else {
-    d.className = 'cf-row-user';
-    d.innerHTML = `<div><div class="cf-bubble-user">${text}</div><div class="cf-time">${cfTime()}</div></div>`;
+    d.className = 'row-user';
+    d.innerHTML = '<div><div class="bubble-user">' + esc(text) + '</div><div class="msg-time">' + time() + '</div></div>';
   }
-  msgs.appendChild(d);
-  msgs.scrollTop = msgs.scrollHeight;
+  msgsEl.appendChild(d);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  return d;
 }
 
-function cfShowTyping() {
-  const msgs = document.getElementById('cfMsgs');
+function showTyping() {
   const d = document.createElement('div');
-  d.className = 'cf-row-bot'; d.id = 'cfTyping';
-  d.innerHTML = `<div class="cf-avatar">🤖</div><div><div class="cf-bubble-bot"><div class="cf-typing"><span></span><span></span><span></span></div></div></div>`;
-  msgs.appendChild(d);
-  msgs.scrollTop = msgs.scrollHeight;
+  d.className = 'row-bot'; d.id = 'typing';
+  d.innerHTML = '<div class="avatar">' + BOT_SVG + '</div><div><div class="bubble-bot"><div class="typing-wrap"><span></span><span></span><span></span></div></div></div>';
+  msgsEl.appendChild(d);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
 }
 
-function cfQ(text) { if (!cfOpen) cfToggle(); document.getElementById('cfInp').value = text; cfSend(); }
+function q(text) { if (!open) toggle(); document.getElementById('inp').value = text; send(); }
 
-async function cfSend() {
-  if (cfBusy) return;
-  const inp = document.getElementById('cfInp');
+async function send() {
+  if (busy) return;
+  const inp = document.getElementById('inp');
   const text = inp.value.trim();
   if (!text) return;
-  inp.value = ''; cfBusy = true;
-  if (!cfOpen) cfToggle();
-  cfAddMsg(text, 'user');
-  cfHistory.push({ role: 'user', content: text });
-  cfShowTyping();
+  inp.value = ''; busy = true;
+  if (!open) toggle();
+  addMsg(text, 'user');
+  history.push({ role: 'user', content: text });
+  if (history.length > 12) history = history.slice(-12);
+  showTyping();
+
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: CF_SYSTEM, messages: cfHistory })
+      body: JSON.stringify({ messages: history })
     });
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Entschuldigung, bitte versuch es nochmal.';
-    document.getElementById('cfTyping')?.remove();
-    cfAddMsg(reply, 'bot');
-    cfHistory.push({ role: 'assistant', content: reply });
+
+    if (!res.ok) throw new Error('bad response');
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let full = '', bubble = null, buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const p = line.slice(6).trim();
+        if (p === '[DONE]') continue;
+        let ev;
+        try { ev = JSON.parse(p); } catch(e) { continue; }
+        if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
+          if (!bubble) {
+            const t = document.getElementById('typing');
+            if (t) t.remove();
+            bubble = addMsg('', 'bot').querySelector('.bubble-bot');
+          }
+          full += ev.delta.text;
+          bubble.innerHTML = esc(full);
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+        }
+      }
+    }
+
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+    if (!full) addMsg('Entschuldigung, bitte versuchen Sie es erneut.', 'bot');
+    else history.push({ role: 'assistant', content: full });
+
   } catch(e) {
-    document.getElementById('cfTyping')?.remove();
-    cfAddMsg('Verbindungsfehler – bitte nochmal versuchen.', 'bot');
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+    addMsg('Verbindungsfehler. Bitte versuchen Sie es erneut oder schreiben Sie an lev@chatfield-ai.ch', 'bot');
   }
-  cfBusy = false;
+  busy = false;
 }
 </script>
-<!-- CHATFIELD WIDGET END -->
-
 </body>
 </html>
