@@ -168,6 +168,17 @@ h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: var(--nav
 .price-btn-outline { background: var(--gray-100); color: var(--navy); }
 .price-btn:hover { opacity: 0.82; }
 
+/* PRESSE */
+.presse-sec { background: var(--white); border-top: 1px solid var(--gray-200); }
+.presse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; margin-top: 2.5rem; }
+@media (max-width: 768px) { .presse-grid { grid-template-columns: 1fr; } }
+.presse-img-wrap { display: flex; justify-content: center; }
+.presse-img-wrap img { width: 100%; max-width: 340px; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.08); border: 1px solid var(--gray-200); }
+.zeitung-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: flex-start; gap: 1rem; }
+.zeitung-logo { font-size: 11px; font-weight: 800; color: var(--navy); background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px; padding: 6px 12px; white-space: nowrap; letter-spacing: 0.02em; flex-shrink: 0; }
+.zeitung-text { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+.zeitung-text strong { color: var(--navy); display: block; margin-bottom: 4px; font-size: 15px; }
+
 /* CONTACT */
 .contact-sec { background: var(--gray-50); }
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-top: 2.5rem; }
@@ -306,6 +317,29 @@ footer p { color: #475569; font-size: 13px; }
     </div>
     <div style="text-align:center;margin-top:2.5rem">
       <a href="#kontakt" class="btn btn-blue">Jetzt Pilot-Platz sichern →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRESSE & SCREENSHOT -->
+<section class="presse-sec">
+  <div class="container">
+    <div class="eyebrow">Chatbot in Aktion</div>
+    <div class="presse-grid">
+      <div>
+        <h2>So sieht Ihr KI-Assistent aus</h2>
+        <p class="section-sub">Der Chatfield-Assistent läuft direkt auf Ihrer Website – beantwortet Fragen, nennt Preise und leitet Kunden weiter. Vollautomatisch, rund um die Uhr.</p>
+        <div class="zeitung-card">
+          <div class="zeitung-logo">Thurgauer<br>Zeitung</div>
+          <div class="zeitung-text">
+            <strong>«Jungunternehmer aus dem Thurgau mit KI-Chatbots»</strong>
+            Lev Hasler und Lino Olimpio bauen KI-Chatbots für Schweizer KMUs – Thurgauer Zeitung, Oktober 2026
+          </div>
+        </div>
+      </div>
+      <div class="presse-img-wrap">
+        <img src="chatbot-screenshot.png" alt="Chatfield Assistent – Screenshot" loading="lazy" />
+      </div>
     </div>
   </div>
 </section>
