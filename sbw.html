@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SBW Assistent – Demo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/sbw-avatar.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #66C838; --green-dark: #4e9e28; --green-soft: #eefbe6;
+  --ink: #16281a; --gray: #64748b; --line: #e6ebe4; --bg: #f3f8ef; --white: #fff;
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Inter', sans-serif; color: var(--ink);
+  background: radial-gradient(1200px 600px at 50% -10%, #e4f6d6 0%, var(--bg) 55%);
+  min-height: 100svh; display: flex; flex-direction: column; align-items: center;
+  padding: 2rem 1rem; line-height: 1.6;
+}
+.intro { text-align: center; max-width: 560px; margin-bottom: 1.5rem; }
+.intro .pill { display: inline-flex; align-items: center; gap: 7px; background: var(--white); border: 1px solid var(--line); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 1rem; }
+.intro h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.intro p { color: var(--gray); font-size: 15px; margin-top: 0.5rem; }
+
+/* CHAT CARD */
+.chat { width: 100%; max-width: 440px; background: var(--white); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 30px 70px rgba(22,40,26,0.16), 0 6px 18px rgba(22,40,26,0.08); display: flex; flex-direction: column; }
+.head { background: linear-gradient(135deg, var(--green-dark), var(--green)); padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+.head-ava { width: 46px; height: 46px; border-radius: 13px; background: var(--white); overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.head-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.head-name { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
+.head-status { font-size: 12px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+.head-dot { width: 7px; height: 7px; border-radius: 50%; background: #d7ffb0; box-shadow: 0 0 0 0 rgba(215,255,176,0.7); animation: pulse 2s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(215,255,176,0.6)} 70%{box-shadow:0 0 0 7px rgba(215,255,176,0)} 100%{box-shadow:0 0 0 0 rgba(215,255,176,0)} }
+
+.msgs { padding: 18px 14px; display: flex; flex-direction: column; gap: 10px; background: #fbfdf9; min-height: 300px; max-height: 420px; overflow-y: auto; }
+.msgs::-webkit-scrollbar { width: 4px; } .msgs::-webkit-scrollbar-thumb { background: #d4ddcf; border-radius: 3px; }
+.row-bot { display: flex; align-items: flex-end; gap: 7px; align-self: flex-start; max-width: 88%; }
+.mini-ava { width: 26px; height: 26px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.mini-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bubble-bot { background: var(--white); border: 1px solid var(--line); border-radius: 4px 15px 15px 15px; padding: 11px 14px; font-size: 14px; color: var(--ink); line-height: 1.55; white-space: pre-wrap; }
+.row-user { align-self: flex-end; max-width: 86%; }
+.bubble-user { background: linear-gradient(135deg, var(--green-dark), var(--green)); color: var(--white); border-radius: 15px 4px 15px 15px; padding: 11px 14px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.typing-wrap { display: flex; gap: 4px; align-items: center; padding: 3px 2px; }
+.typing-wrap span { width: 6px; height: 6px; border-radius: 50%; background: #bcc9b4; animation: bounce 1.2s infinite; }
+.typing-wrap span:nth-child(2){animation-delay:.2s} .typing-wrap span:nth-child(3){animation-delay:.4s}
+@keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-5px);opacity:1} }
+
+.chips { padding: 10px 14px; display: flex; gap: 6px; flex-wrap: wrap; background: var(--white); border-top: 1px solid var(--line); }
+.chip { font-size: 12.5px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--green-soft); color: var(--green-dark); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+.chip:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+.inp-row { display: flex; gap: 8px; padding: 12px 14px; background: var(--white); border-top: 1px solid var(--line); }
+.inp { flex: 1; padding: 11px 15px; border: 1px solid var(--line); border-radius: 22px; background: #fbfdf9; font-size: 14px; font-family: inherit; color: var(--ink); outline: none; transition: border-color 0.15s; }
+.inp:focus { border-color: var(--green); background: var(--white); }
+.send { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--green-dark), var(--green)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.15s; }
+.send:hover { transform: scale(1.06); }
+.send svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.foot { text-align: center; font-size: 12px; color: #9aa89a; margin-top: 1.25rem; }
+.foot a { color: var(--green-dark); text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <div class="pill">🐰 Demo · KI-Assistent für SBW</div>
+  <h1>Der SBW Assistent</h1>
+  <p>Beantwortet Fragen zu Schulen, Standorten und Angeboten – und leitet an die richtige Stelle weiter. Stell ihm eine Frage.</p>
+</div>
+
+<div class="chat">
+  <div class="head">
+    <div class="head-ava"><img src="/sbw-avatar.png" alt="SBW" /></div>
+    <div>
+      <div class="head-name">SBW Assistent</div>
+      <div class="head-status"><span class="head-dot"></span> Online</div>
+    </div>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="row-bot">
+      <div class="mini-ava"><img src="/sbw-avatar.png" alt="" /></div>
+      <div class="bubble-bot">Hallo! Ich bin der SBW-Assistent. 🐰 Wie kann ich dir weiterhelfen?</div>
+    </div>
+  </div>
+  <div class="chips" id="chips">
+    <div class="chip" onclick="q('Welche Schulen gehören zu SBW?')">Welche Schulen?</div>
+    <div class="chip" onclick="q('Wo ist der Hauptsitz von SBW?')">Standort</div>
+    <div class="chip" onclick="q('Was ist der Talent-Campus Winterthur?')">Talent-Campus</div>
+    <div class="chip" onclick="q('Wie melde ich mich für eine Schule an?')">Anmeldung</div>
+    <div class="chip" onclick="q('Wie kann ich SBW kontaktieren?')">Kontakt</div>
+  </div>
+  <div class="inp-row">
+    <input class="inp" id="inp" placeholder="Deine Frage..." onkeydown="if(event.key==='Enter')send()" autocomplete="off" />
+    <button class="send" onclick="send()" aria-label="Senden">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<p class="foot">Powered by <a href="https://chatfield-ai.ch" target="_blank" rel="noopener">chatfield-ai.ch</a></p>
+
+<script>
+const msgsEl = document.getElementById('msgs');
+let history = [], busy = false;
+const AVA = '<div class="mini-ava"><img src="/sbw-avatar.png" alt=""></div>';
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function addMsg(text, who) {
+  const row = document.createElement('div');
+  if (who === 'user') { row.className = 'row-user'; row.innerHTML = '<div class="bubble-user">'+esc(text)+'</div>'; }
+  else { row.className = 'row-bot'; row.innerHTML = AVA + '<div class="bubble-bot">'+esc(text)+'</div>'; }
+  msgsEl.appendChild(row); msgsEl.scrollTop = msgsEl.scrollHeight;
+  return row;
+}
+function showTyping() {
+  const row = document.createElement('div'); row.className = 'row-bot'; row.id = 'typing';
+  row.innerHTML = AVA + '<div class="bubble-bot"><div class="typing-wrap"><span></span><span></span><span></span></div></div>';
+  msgsEl.appendChild(row); msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+function q(text){ document.getElementById('inp').value = text; send(); }
+
+async function send() {
+  if (busy) return;
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim(); if (!text) return;
+  inp.value = ''; busy = true;
+  addMsg(text, 'user');
+  history.push({ role: 'user', content: text });
+  if (history.length > 12) history = history.slice(-12);
+  showTyping();
+  try {
+    const res = await fetch('/api/sbw', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    if (!res.ok) throw new Error('bad');
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let full = '', bubble = null, buf = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n'); buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const p = line.slice(6).trim();
+        if (p === '[DONE]') continue;
+        let ev; try { ev = JSON.parse(p); } catch(e){ continue; }
+        if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
+          if (!bubble) { const t = document.getElementById('typing'); if (t) t.remove(); bubble = addMsg('', 'bot').querySelector('.bubble-bot'); }
+          full += ev.delta.text; bubble.textContent = full; msgsEl.scrollTop = msgsEl.scrollHeight;
+        }
+      }
+    }
+    const t = document.getElementById('typing'); if (t) t.remove();
+    if (!full) addMsg('Entschuldigung, bitte versuch es nochmals.', 'bot');
+    else history.push({ role: 'assistant', content: full });
+  } catch(e) {
+    const t = document.getElementById('typing'); if (t) t.remove();
+    addMsg('Verbindungsfehler. Bitte versuch es gleich nochmals.', 'bot');
+  }
+  busy = false;
+}
+</script>
+</body>
+</html>
