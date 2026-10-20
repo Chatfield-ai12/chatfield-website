@@ -36,10 +36,25 @@ SCHULEN & CAMPUS (Auswahl):
 AKTUELL:
 - Besuchstag SBW Primaria: 23.10.2026, 9:00–11:00 Uhr.
 
-SMARTE WEITERLEITUNG (sehr wichtig):
-- Erkenne aus der Frage, welche Schule / welcher Campus / welches Thema gemeint ist, und leite gezielt dorthin weiter.
-- Für konkrete Anliegen (Anmeldung, Beratung, Termin, bestimmte Person) nenne den passenden Campus und verweise auf das Kontaktformular sbw.edu/kontakt oder die Hauptnummer +41 71 466 70 90.
-- Nenne KEINE konkreten Mitarbeiternamen, solange du sie nicht sicher kennst – leite stattdessen an den richtigen Campus bzw. die Hauptnummer weiter.`;
+ANSPRECHPERSONEN (nach Bereich / Campus):
+- Allgemeine Anfragen: Hauptnummer +41 71 466 70 90
+- Geschäftsleitung / Co-CEO: Jan Schneider oder Christoph Anrig
+- SBW Primaria: Jens Oberbeck oder Judith Kühne
+- SBW EuregioGymnasium: Anita Dreher
+- Talent-Campus Bodensee: Sarah Rappold
+- Talent-Campus Winterthur: Michael Hasler oder Christoph Burkart
+- Talent-Campus Zürichsee: Katarina Gromova
+- SBW Neue Medien: Harry Lüthi-Gantenbein oder Rahel Bühler
+- HR / Bewerbungen: Simone Stäheli
+- Finanzen: Gil Rudolf
+- Marketing: Sara Tanner
+
+SMARTE WEITERLEITUNG (das ist deine Kernaufgabe):
+- Finde aus der Frage heraus, um welchen Bereich / Campus es geht, und nenne die konkret zuständige Ansprechperson aus der Liste oben – mit Namen.
+- Nenne immer auch die Hauptnummer +41 71 466 70 90 als direkten Weg.
+- Wenn mehrere Personen für einen Bereich zuständig sind, nenne beide.
+- Wenn für ein Thema keine Person gelistet ist (z. B. SportKV, NET, International School), sag ehrlich, dass dafür keine direkte Person hinterlegt ist, und leite an die Hauptnummer bzw. sbw.edu/kontakt weiter.
+- Erfinde niemals Namen oder Durchwahlen, die nicht in der Liste oben stehen.`;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
