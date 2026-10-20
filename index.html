@@ -274,7 +274,12 @@ footer p { color: #475569; font-size: 13px; }
   <span class="logo-pill">✂️ Coiffeure</span>
   <span class="logo-pill">🚗 Garagen</span>
   <span class="logo-pill">🏨 Hotels</span>
+  <span class="logo-pill">🍽️ Restaurants</span>
+  <span class="logo-pill">🦷 Zahnarztpraxen</span>
   <span class="logo-pill">💅 Beauty Studios</span>
+  <span class="logo-pill">🏫 Schulen</span>
+  <span class="logo-pill">🏗️ Handwerksbetriebe</span>
+  <span class="logo-pill">… und viele mehr</span>
 </div>
 
 <!-- HOW -->
@@ -493,7 +498,14 @@ footer p { color: #475569; font-size: 13px; }
             <option>Coiffeur / Salon</option>
             <option>Garage / Autowerkstatt</option>
             <option>Hotel</option>
-            <option>Restaurant</option>
+            <option>Restaurant / Café</option>
+            <option>Zahnarztpraxis</option>
+            <option>Arztpraxis / Therapie</option>
+            <option>Beauty Studio / Kosmetik</option>
+            <option>Handwerksbetrieb</option>
+            <option>Schule / Bildung</option>
+            <option>Immobilien</option>
+            <option>Detailhandel / Shop</option>
             <option>Andere</option>
           </select>
         </div>
@@ -514,7 +526,15 @@ footer p { color: #475569; font-size: 13px; }
 const replies = {
   'Was kostet das?': 'Unser Starter-Paket beginnt bei CHF 99/Monat zzgl. einmaliger Einrichtung. Im Pilot-Programm ist der Setup sogar gratis! 😊',
   'Öffnungszeiten?': 'Als KI-Assistent bin ich rund um die Uhr für Sie da – 24/7. Das Chatfield-Team erreichen Sie unter chatfield243@gmail.com.',
-  'Demo buchen?': 'Gerne! Füllen Sie das Kontaktformular aus – wir melden uns innerhalb von 24 Stunden. Komplett kostenlos und unverbindlich. 🚀'
+  'Demo buchen?': 'Gerne! Füllen Sie das Kontaktformular aus – wir melden uns innerhalb von 24 Stunden. Komplett kostenlos und unverbindlich. 🚀',
+  'Was macht Chatfield genau?': 'Chatfield baut massgeschneiderte KI-Assistenten für Schweizer KMUs. Der Bot beantwortet Kundenfragen automatisch – rund um die Uhr, auf Ihrer Website. Kein technisches Wissen nötig. 🤖',
+  'Was kostet das?': 'Es gibt drei Optionen:\n\n• Starter: CHF 99/Monat + CHF 500 Einrichtung\n• Business: CHF 149/Monat + CHF 800 Einrichtung\n• Enterprise: auf Anfrage\n\nIm Pilot-Programm ist der Setup gratis! 🎉',
+  'Wie funktioniert die Integration auf meiner Website?': 'Ganz einfach: Wir liefern Ihnen einen kleinen Code-Schnipsel. Den fügt Ihr Webmaster (oder wir) auf Ihrer Seite ein – fertig. Funktioniert auf jeder Website: WordPress, Squarespace, Wix, Framer, und mehr. ⚡',
+  'Was ist das Pilot-Programm?': 'Wir suchen 3 Schweizer KMUs zum kostenlosen Testen. Sie bekommen: massgeschneiderten KI-Assistenten, 30 Tage gratis, keine Einrichtungsgebühr, kein Risiko. Einfach Kontaktformular ausfüllen! 🚀',
+  'Für welche Branchen eignet sich das?': 'Unser Assistent passt zu praktisch jedem KMU: Restaurants, Fitnessstudios, Garagen, Coiffeure, Zahnarztpraxen, Hotels, Schulen, Handwerksbetriebe, Beauty Studios und viele mehr. Wenn Ihre Kunden Fragen haben, hilft Chatfield. 💬',
+  'Wie sieht es mit Datenschutz aus?': 'Vollständig DSGVO-konform. Keine Kundendaten werden gespeichert oder weitergegeben. Der Assistent läuft auf sicheren Schweizer/EU-Servern. Ihre Daten gehören Ihnen. 🔒',
+  'Wie schnell ist der Bot live?': 'Nach Ihrer Anfrage melden wir uns innerhalb von 24 Stunden. Der Assistent ist dann in 3–5 Werktagen live auf Ihrer Website. Wir übernehmen alles. ✅',
+  'Wer steckt hinter Chatfield?': 'Wir sind Lev Hasler und Lino Olimpio – zwei 17-jährige Lehrlinge aus Weinfelden. Wir bauen KI-Assistenten für Schweizer KMUs neben unserer Ausbildung. Die Thurgauer Zeitung hat über uns berichtet. 🇨🇭'
 };
 const msgs = document.getElementById('cwMsgs');
 function cwQ(t) { document.getElementById('cwInp').value = t; cwSend(); }
@@ -596,7 +616,13 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); min-height: 100v
 .fab:hover { background: var(--navy-mid); transform: scale(1.05); }
 .fab svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .notif { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; border-radius: 50%; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); }
-@media (max-width: 420px) { .panel { width: calc(100vw - 2rem); } .widget { right: 1rem; bottom: 1rem; } }
+@media (max-width: 480px) {
+  .panel { width: calc(100vw - 1.5rem); max-height: calc(100vh - 100px); }
+  .widget { right: 0.75rem; bottom: 0.75rem; }
+  .msgs { min-height: 220px; max-height: calc(100vh - 320px); }
+  .quick { gap: 4px; padding: 6px 10px; }
+  .qbtn { font-size: 11px; padding: 4px 9px; }
+}
 </style>
 </head>
 <body>
