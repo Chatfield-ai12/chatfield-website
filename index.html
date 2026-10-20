@@ -169,15 +169,43 @@ h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: var(--nav
 .price-btn:hover { opacity: 0.82; }
 
 /* PRESSE */
-.presse-sec { background: var(--white); border-top: 1px solid var(--gray-200); }
-.presse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; margin-top: 2.5rem; }
-@media (max-width: 768px) { .presse-grid { grid-template-columns: 1fr; } }
-.presse-img-wrap { display: flex; justify-content: center; }
-.presse-img-wrap img { width: 100%; max-width: 340px; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.08); border: 1px solid var(--gray-200); }
-.zeitung-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: flex-start; gap: 1rem; }
-.zeitung-logo { font-size: 11px; font-weight: 800; color: var(--navy); background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px; padding: 6px 12px; white-space: nowrap; letter-spacing: 0.02em; flex-shrink: 0; }
-.zeitung-text { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
-.zeitung-text strong { color: var(--navy); display: block; margin-bottom: 4px; font-size: 15px; }
+.presse-sec { background: var(--navy); padding: 5rem 1.5rem; }
+.presse-sec .eyebrow { color: #60a5fa; }
+.presse-sec h2 { color: var(--white); }
+.presse-sec .section-sub { color: #94a3b8; }
+.presse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+@media (max-width: 768px) { .presse-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+.presse-img-wrap { display: flex; justify-content: center; position: relative; }
+.presse-img-wrap::before {
+  content: ''; position: absolute;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.presse-img-wrap img {
+  width: 100%; max-width: 300px; border-radius: 22px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
+  position: relative; z-index: 1;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.zeitung-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.5rem; margin-top: 2rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s;
+}
+.zeitung-card:hover { background: rgba(255,255,255,0.08); }
+.zeitung-logo {
+  font-size: 10px; font-weight: 800; color: var(--white);
+  background: rgba(37,99,235,0.3); border: 1px solid rgba(37,99,235,0.4);
+  border-radius: 8px; padding: 6px 12px; white-space: nowrap;
+  letter-spacing: 0.04em; flex-shrink: 0; text-align: center; line-height: 1.4;
+}
+.zeitung-text { font-size: 14px; color: #94a3b8; line-height: 1.6; }
+.zeitung-text strong { color: var(--white); display: block; margin-bottom: 4px; font-size: 15px; }
 
 /* CONTACT */
 .contact-sec { background: var(--gray-50); }
@@ -329,13 +357,15 @@ footer p { color: #475569; font-size: 13px; }
       <div>
         <h2>So sieht Ihr KI-Assistent aus</h2>
         <p class="section-sub">Der Chatfield-Assistent läuft direkt auf Ihrer Website – beantwortet Fragen, nennt Preise und leitet Kunden weiter. Vollautomatisch, rund um die Uhr.</p>
-        <div class="zeitung-card">
-          <div class="zeitung-logo">Thurgauer<br>Zeitung</div>
-          <div class="zeitung-text">
-            <strong>«Jungunternehmer aus dem Thurgau mit KI-Chatbots»</strong>
-            Lev Hasler und Lino Olimpio bauen KI-Chatbots für Schweizer KMUs – <a href="https://www.thurgauerzeitung.ch/ostschweiz/weinfelden-kreuzlingen/weinfelder-teenager-bauen-eigenen-ki-assistenten-ld.4242606" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;font-weight:600;">Thurgauer Zeitung, Oktober 2026 ↗</a>
+        <a href="https://www.thurgauerzeitung.ch/ostschweiz/weinfelden-kreuzlingen/weinfelder-teenager-bauen-eigenen-ki-assistenten-ld.4242606" target="_blank" rel="noopener" style="text-decoration:none;">
+          <div class="zeitung-card">
+            <div class="zeitung-logo">Thurgauer<br>Zeitung</div>
+            <div class="zeitung-text">
+              <strong>«Weinfelder Teenager bauen eigenen KI-Assistenten»</strong>
+              Lev Hasler und Lino Olimpio aus Weinfelden – berichtet in der Thurgauer Zeitung, Oktober 2026 ↗
+            </div>
           </div>
-        </div>
+        </a>
       </div>
       <div class="presse-img-wrap">
         <img src="chatbot-screenshot.png" alt="Chatfield Assistent – Screenshot" loading="lazy" />
