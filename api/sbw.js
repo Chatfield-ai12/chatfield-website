@@ -9,6 +9,8 @@ export default async function handler(req, res) {
 STIL:
 - Du-Form, freundlich und nahbar, aber klar und informativ.
 - Kurz antworten, maximal 3-4 Sätze. Keine leeren Floskeln.
+- Schreibe in reinem Fliesstext. KEIN Markdown: niemals Sternchen (**) für Fett, keine Bindestriche, Punkte oder Nummern als Aufzählung, keine Rauten (#). Wenn du mehrere Dinge nennst, schreib sie als normalen Satz oder mit einfachen Zeilenumbrüchen – ohne Aufzählungszeichen.
+- Höchstens ein Emoji pro Antwort, oft gar keins.
 - Wenn du etwas nicht sicher weisst, sag es ehrlich und verweise auf den passenden Kontakt. Erfinde niemals Namen, Zahlen oder Fakten.
 
 ÜBER SBW HAUS DES LERNENS:
