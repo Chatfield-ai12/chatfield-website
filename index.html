@@ -215,6 +215,18 @@ h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: var(--nav
 .feat h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
 .feat p { font-size: 13.5px; color: var(--gray-600); line-height: 1.65; }
 
+/* USE CASES */
+.cases { background: var(--gray-50); }
+.cases .container { text-align: center; }
+.cases .section-sub { margin-left: auto; margin-right: auto; }
+.cases-list { display: flex; flex-direction: column; gap: 4rem; margin-top: 3.5rem; }
+.case { max-width: 940px; margin: 0 auto; width: 100%; }
+.case-head { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1.1rem; flex-wrap: wrap; }
+.case-tag { font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.07em; background: var(--blue-light); padding: 6px 14px; border-radius: 20px; }
+.case-cap { font-size: 15px; color: var(--gray-600); font-weight: 500; }
+.case img { width: 100%; height: auto; display: block; }
+@media (max-width: 640px) { .cases-list { gap: 2.75rem; } .case-cap { font-size: 13.5px; } }
+
 /* PILOT */
 .pilot { background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%); }
 .pilot h2 { color: var(--white); }
@@ -353,7 +365,7 @@ footer p { color: #475569; font-size: 13px; }
   <a href="#" class="logo"><span class="logo-ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Chat<span>field</span></a>
   <div class="nav-links">
     <a href="#how">So funktionierts</a>
-    <a href="#pilot">Pilot</a>
+    <a href="#branchen">Branchen</a>
     <a href="#preise">Preise</a>
     <a href="#kontakt" class="nav-cta">Demo anfragen</a>
   </div>
@@ -422,6 +434,39 @@ footer p { color: #475569; font-size: 13px; }
       <div class="feat"><div class="feat-icon">🗣️</div><h3>Mehrsprachig</h3><p>Deutsch, Englisch, Französisch – der Assistent spricht die Sprache Ihrer Kunden.</p></div>
       <div class="feat"><div class="feat-icon">🔒</div><h3>Datenschutz</h3><p>DSGVO-konform. Ihre Kundendaten bleiben sicher.</p></div>
     </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="cases" id="branchen">
+  <div class="container">
+    <div class="eyebrow">Branchen</div>
+    <h2>Auf jeder Website zuhause</h2>
+    <p class="section-sub">Egal welche Branche – Ihr Assistent fügt sich nahtlos ins Design ein und beantwortet genau die Fragen Ihrer Kunden.</p>
+    <div class="cases-list">
+      <div class="case">
+        <div class="case-head">
+          <span class="case-tag">Restaurant</span>
+          <span class="case-cap">Nimmt Reservationen entgegen – auch nach Feierabend.</span>
+        </div>
+        <img src="usecase-restaurant.webp" alt="Chatfield Assistent auf einer Restaurant-Website" loading="lazy" width="1600" height="637" />
+      </div>
+      <div class="case">
+        <div class="case-head">
+          <span class="case-tag">Fitnessstudio</span>
+          <span class="case-cap">Beantwortet Fragen zu Abos, Kursen und Öffnungszeiten.</span>
+        </div>
+        <img src="usecase-fitness.webp" alt="Chatfield Assistent auf einer Fitnessstudio-Website" loading="lazy" width="1600" height="637" />
+      </div>
+      <div class="case">
+        <div class="case-head">
+          <span class="case-tag">Zahnarztpraxis</span>
+          <span class="case-cap">Vergibt Termine und entlastet Ihr Empfangsteam.</span>
+        </div>
+        <img src="usecase-dental.webp" alt="Chatfield Assistent auf einer Zahnarztpraxis-Website" loading="lazy" width="1600" height="637" />
+      </div>
+    </div>
+    <div style="margin-top:3rem"><a href="#kontakt" class="btn btn-blue">Für meine Branche anfragen →</a></div>
   </div>
 </section>
 
