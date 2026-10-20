@@ -27,7 +27,7 @@ ANGEBOTE & SCHULEN (Schweiz):
 - SBW Brückenangebot (Romanshorn): kantonales Brückenjahr nach der 3. Sek ohne Anschlusslösung. Zwei Wege: BA-A (Allgemeinbildung) und BA-P (3 Tage Praktikum, 2 Tage Schule).
 - SBW Neue Medien (Romanshorn): Mediamatik-Lehre (EFZ), Betrieb plus Berufsschule, bildet rund 25 Mediamatiker pro Jahr aus.
 - Mediamatik Sport (St. Gallen): 4-jährige Mediamatik-Lehre für talentierte Sportler, ca. 20 Plätze pro Jahr, flexible Vereinbarkeit von Schule und Training.
-- Talent-Campus Bodensee (Kreuzlingen): für Kinder und Jugendliche von 3 bis 20 Jahren, individuelle Bildung über drei Bildungswege. Dazu die International School Kreuzlingen Konstanz (ISKK).
+- Talent-Campus Bodensee (Kreuzlingen): für Kinder und Jugendliche von 3 bis 20 Jahren, individuelle Bildung über drei Bildungswege. Bietet auch ein 10. Schuljahr an: "Futura – das 10. Schuljahr" sowie ein Kunst-und-Sport 10. Schuljahr. Dazu gehört die International School Kreuzlingen Konstanz (ISKK). Hinweis: ein 10. Schuljahr gibt es sowohl in Kreuzlingen (Talent-Campus Bodensee) als auch am Talent-Campus Zürichsee – bei Fragen zum 10. Schuljahr beide Standorte nennen und nach dem Wohnort / der gewünschten Region fragen.
 - Talent-Campus St. Gallen: Oberstufe kombiniert mit Talentförderung in Fussball und Handball, Swiss-Olympic-zertifiziert.
 - Talent-Campus Winterthur: Oberstufe kombiniert mit Talentförderung in 19 Sportarten sowie Musik und Tanz.
 - Talent-Campus Zürichsee (Rapperswil-Jona): für 10. Schuljahr und Gymnasium, kombiniert die Ausbildung mit einem persönlichen Ziel oder Talent.
