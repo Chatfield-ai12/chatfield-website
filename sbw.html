@@ -31,7 +31,19 @@ body {
   box-shadow: 0 30px 70px rgba(22,40,26,0.16), 0 6px 18px rgba(22,40,26,0.08); display: flex; flex-direction: column; }
 .head { background: linear-gradient(135deg, var(--green-dark), var(--green)); padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
 .head-ava { width: 46px; height: 46px; border-radius: 13px; background: var(--white); overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.head-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.head-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 85%; animation: hop-idle 3.4s ease-in-out infinite; }
+/* gentle idle "breathing/bob" so the rabbit feels alive */
+@keyframes hop-idle { 0%,100% { transform: translateY(0) scale(1) rotate(0deg); } 50% { transform: translateY(-2.5px) scale(1.035) rotate(0deg); } }
+/* happy reaction hop when the bot answers */
+.head-ava img.react { animation: hop-react 0.75s ease; }
+@keyframes hop-react {
+  0% { transform: translateY(0) scale(1) rotate(0deg); }
+  25% { transform: translateY(-7px) scale(1.08) rotate(-5deg); }
+  50% { transform: translateY(0) scale(1) rotate(4deg); }
+  70% { transform: translateY(-3px) scale(1.04) rotate(-2deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) { .head-ava img { animation: none; } }
 .head-name { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
 .head-status { font-size: 12px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
 .head-dot { width: 7px; height: 7px; border-radius: 50%; background: #d7ffb0; box-shadow: 0 0 0 0 rgba(215,255,176,0.7); animation: pulse 2s infinite; }
@@ -106,6 +118,12 @@ body {
 const msgsEl = document.getElementById('msgs');
 let history = [], busy = false;
 const AVA = '<div class="mini-ava"><img src="/sbw-avatar.png" alt=""></div>';
+const headAva = document.querySelector('.head-ava img');
+function reactAvatar() {
+  if (!headAva) return;
+  headAva.classList.remove('react'); void headAva.offsetWidth; headAva.classList.add('react');
+  setTimeout(() => headAva.classList.remove('react'), 800);
+}
 function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 function addMsg(text, who) {
   const row = document.createElement('div');
@@ -150,7 +168,7 @@ async function send() {
         if (p === '[DONE]') continue;
         let ev; try { ev = JSON.parse(p); } catch(e){ continue; }
         if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
-          if (!bubble) { const t = document.getElementById('typing'); if (t) t.remove(); bubble = addMsg('', 'bot').querySelector('.bubble-bot'); }
+          if (!bubble) { const t = document.getElementById('typing'); if (t) t.remove(); bubble = addMsg('', 'bot').querySelector('.bubble-bot'); reactAvatar(); }
           full += ev.delta.text; bubble.textContent = full; msgsEl.scrollTop = msgsEl.scrollHeight;
         }
       }
