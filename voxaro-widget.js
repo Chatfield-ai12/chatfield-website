@@ -38,6 +38,8 @@
     '.open .fab .wv{display:none;}' +
     '.open .fab .x{display:block;}' +
     '.open .fab::before{animation:none;}' +
+    /* backdrop (mobile only) */
+    '.backdrop{position:fixed;inset:0;background:rgba(20,16,40,.5);opacity:0;pointer-events:none;transition:opacity .22s;}' +
     /* panel */
     '.panel{position:fixed;bottom:94px;right:22px;width:374px;max-width:calc(100vw - 32px);height:564px;max-height:calc(100dvh - 128px);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 30px 70px rgba(26,22,51,.33),0 6px 18px rgba(26,22,51,.14);display:none;flex-direction:column;}' +
     '.open .panel{display:flex;animation:vxin .22s ease;}' +
@@ -86,6 +88,7 @@
       '.panel{right:0;left:0;bottom:0;width:100%;max-width:100%;height:88dvh;max-height:88dvh;border-radius:18px 18px 0 0;}' +
       '.open .panel{animation:vxsheet .25s ease;}' +
       '@keyframes vxsheet{from{transform:translateY(100%)}to{transform:translateY(0)}}' +
+      '.open .backdrop{opacity:1;pointer-events:auto;}' +
       '.open .fab{display:none;}' +
       '.fab{bottom:18px;right:18px;width:56px;height:56px;}' +
       '.msgs{padding:16px 14px;}' +
@@ -95,6 +98,7 @@
     '@media(prefers-reduced-motion:reduce){.fab::before,.head .logo .wv rect,.head .status::before{animation:none;}}' +
     '</style>' +
     '<div class="wrap" id="wrap">' +
+    '<div class="backdrop" id="vxBackdrop"></div>' +
     '<div class="panel">' +
       '<div class="head">' +
         '<div class="logo">' + WAVE + '</div>' +
@@ -170,6 +174,7 @@
 
   root.getElementById("vxFab").addEventListener("click",toggle);
   root.getElementById("vxClose").addEventListener("click",toggle);
+  root.getElementById("vxBackdrop").addEventListener("click",toggle);
   root.getElementById("vxSend").addEventListener("click",function(){send();});
   inp.addEventListener("keydown",function(e){ if(e.key==="Enter") send(); });
   root.getElementById("vxChips").addEventListener("click",function(e){
