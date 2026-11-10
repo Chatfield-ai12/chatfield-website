@@ -12,7 +12,7 @@
   var root = host.attachShadow({ mode: "open" });
 
   // Voxaro brand: indigo -> violet, voice/soundwave motif
-  var A = "#4f46e5", B = "#7c3aed", DARK = "#1a1633";
+  var A = "#3d8ef8", B = "#2a7ae8", DARK = "#04090f";
 
   // soundwave logo (5 equalizer bars)
   var WAVE =
