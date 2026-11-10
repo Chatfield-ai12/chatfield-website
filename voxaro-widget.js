@@ -63,28 +63,28 @@
     '.head .close{position:relative;margin-left:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);cursor:pointer;width:28px;height:28px;border-radius:8px;font-size:15px;line-height:1;}' +
     '.head .close:hover{background:rgba(255,255,255,.26);}' +
     /* messages */
-    '.msgs{flex:1;padding:16px 13px;overflow-y:auto;display:flex;flex-direction:column;gap:9px;background:#07111c;}' +
-    '.msgs::-webkit-scrollbar{width:4px;}.msgs::-webkit-scrollbar-thumb{background:rgba(61,142,248,.3);border-radius:3px;}' +
-    '.b{font-size:14px;line-height:1.5;padding:10px 14px;max-width:86%;white-space:pre-wrap;word-wrap:break-word;}' +
-    '.bot{align-self:flex-start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:4px 15px 15px 15px;color:#e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.2);}' +
-    '.usr{align-self:flex-end;background:linear-gradient(135deg,' + A + ',' + B + ');color:#fff;border-radius:15px 4px 15px 15px;}' +
-    '.typing{display:flex;gap:4px;align-items:center;padding:4px 2px;}' +
-    '.typing span{width:6px;height:6px;border-radius:50%;background:rgba(61,142,248,.6);animation:vxb 1.2s infinite;}' +
+    '.msgs{flex:1;padding:20px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;background:#060e18;}' +
+    '.msgs::-webkit-scrollbar{width:3px;}.msgs::-webkit-scrollbar-thumb{background:rgba(61,142,248,.2);border-radius:3px;}' +
+    '.b{font-size:13.5px;line-height:1.6;padding:11px 15px;max-width:82%;white-space:pre-wrap;word-wrap:break-word;letter-spacing:.01px;}' +
+    '.bot{align-self:flex-start;background:#0d1e30;border:1px solid rgba(61,142,248,.12);border-radius:2px 16px 16px 16px;color:#cbd5e1;}' +
+    '.usr{align-self:flex-end;background:' + A + ';color:#fff;border-radius:16px 2px 16px 16px;border:none;}' +
+    '.typing{display:flex;gap:5px;align-items:center;padding:4px 2px;}' +
+    '.typing span{width:5px;height:5px;border-radius:50%;background:rgba(61,142,248,.5);animation:vxb 1.2s infinite;}' +
     '.typing span:nth-child(2){animation-delay:.2s;}.typing span:nth-child(3){animation-delay:.4s;}' +
-    '@keyframes vxb{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}' +
+    '@keyframes vxb{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}' +
     /* chips + input */
-    '.chips{padding:9px 13px;display:flex;gap:6px;flex-wrap:wrap;background:#07111c;border-top:1px solid rgba(255,255,255,.07);}' +
-    '.chip{font-size:12px;padding:6px 12px;border:1px solid rgba(61,142,248,.3);border-radius:16px;background:rgba(61,142,248,.08);color:' + A + ';cursor:pointer;font-weight:500;transition:all .15s;}' +
-    '.chip:hover{background:linear-gradient(135deg,' + A + ',' + B + ');color:#fff;border-color:transparent;}' +
-    '.inprow{display:flex;gap:8px;padding:11px 13px;background:#07111c;border-top:1px solid rgba(255,255,255,.07);}' +
-    '.inp{flex:1;padding:11px 15px;border:1px solid rgba(61,142,248,.25);border-radius:22px;background:rgba(255,255,255,.05);font-size:14px;color:#e2e8f0;outline:none;transition:border-color .15s;}' +
-    '.inp::placeholder{color:rgba(255,255,255,.3);}' +
-    '.inp:focus{border-color:' + A + ';background:rgba(61,142,248,.07);}' +
-    '.send{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,' + A + ',' + B + ');border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;}' +
-    '.send:hover{transform:scale(1.07);}' +
-    '.send svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}' +
-    '.foot{text-align:center;font-size:10px;color:rgba(255,255,255,.25);padding:7px;background:#07111c;border-top:1px solid rgba(255,255,255,.05);}' +
-    '.foot a{color:' + A + ';text-decoration:none;font-weight:600;}' +
+    '.chips{padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;background:#060e18;border-top:1px solid rgba(255,255,255,.05);}' +
+    '.chip{font-size:11.5px;padding:5px 11px;border:1px solid rgba(61,142,248,.2);border-radius:20px;background:transparent;color:rgba(255,255,255,.55);cursor:pointer;font-weight:400;transition:all .15s;letter-spacing:.01px;}' +
+    '.chip:hover{background:rgba(61,142,248,.12);color:#fff;border-color:rgba(61,142,248,.4);}' +
+    '.inprow{display:flex;gap:8px;padding:12px 14px 14px;background:#060e18;border-top:1px solid rgba(255,255,255,.05);align-items:center;}' +
+    '.inp{flex:1;padding:10px 16px;border:1px solid rgba(255,255,255,.08);border-radius:24px;background:rgba(255,255,255,.04);font-size:13.5px;color:#e2e8f0;outline:none;transition:all .2s;}' +
+    '.inp::placeholder{color:rgba(255,255,255,.22);}' +
+    '.inp:focus{border-color:rgba(61,142,248,.4);background:rgba(61,142,248,.05);}' +
+    '.send{width:36px;height:36px;border-radius:50%;background:' + A + ';border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s;}' +
+    '.send:hover{opacity:.85;}' +
+    '.send svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}' +
+    '.foot{text-align:center;font-size:10px;color:rgba(255,255,255,.18);padding:8px;background:#060e18;}' +
+    '.foot a{color:rgba(61,142,248,.7);text-decoration:none;}' +
     '@media(max-width:480px){' +
       '.panel{right:0;left:0;bottom:0;width:100%;max-width:100%;height:88dvh;max-height:88dvh;border-radius:18px 18px 0 0;}' +
       '.open .panel{animation:vxsheet .25s ease;}' +
@@ -106,7 +106,7 @@
         '<div><div class="name">Voxaro Assistent</div><div class="status">Online</div></div>' +
         '<button class="close" id="vxClose" aria-label="Schliessen">&#10005;</button>' +
       '</div>' +
-      '<div class="msgs" id="vxMsgs"><div class="b bot">Guten Tag! Ich bin der Assistent von voxaro. Wie kann ich Ihnen helfen?</div></div>' +
+      '<div class="msgs" id="vxMsgs"><div class="b bot">Guten Tag! Wie kann ich Ihnen helfen?</div></div>' +
       '<div class="chips" id="vxChips">' +
         '<div class="chip">Was ist ein Voice Agent?</div>' +
         '<div class="chip">Macht ihr Websites?</div>' +
