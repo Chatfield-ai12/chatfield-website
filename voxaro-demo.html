@@ -10,16 +10,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:    #04090f;
-  --blue:  #3d8ef8;
-  --blue2: #2a7ae8;
-  --white: #ffffff;
-  --muted: rgba(255,255,255,0.4);
-  --sub:   rgba(255,255,255,0.62);
-  --border:  rgba(255,255,255,0.07);
-  --border-b:rgba(61,142,248,0.22);
-  --surface: rgba(255,255,255,0.03);
-  --surface2:rgba(255,255,255,0.055);
+  --bg:     #04090f;
+  --blue:   #3d8ef8;
+  --blue2:  #2a7ae8;
+  --white:  #ffffff;
+  --muted:  rgba(255,255,255,0.4);
+  --sub:    rgba(255,255,255,0.6);
+  --border: rgba(255,255,255,0.07);
+  --bblue:  rgba(61,142,248,0.22);
+  --surf:   rgba(255,255,255,0.03);
+  --surf2:  rgba(255,255,255,0.055);
 }
 
 html { scroll-behavior: smooth; }
@@ -32,50 +32,44 @@ body {
   overflow-x: hidden;
 }
 
-/* ── STARS ── */
-.stars {
+/* ── STARFIELD ── */
+#stars {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(20,50,110,0.5) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 35% at 85% 15%, rgba(61,142,248,0.1) 0%, transparent 60%);
+  overflow: hidden;
 }
-.stars::before {
+#stars::before {
   content: '';
   position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 8%  10%, rgba(255,255,255,0.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 5%,  rgba(255,255,255,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 48% 18%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 8%,  rgba(255,255,255,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 88% 22%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(2px 2px at 15% 35%, rgba(255,255,255,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 42%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,0.35)0%, transparent 100%),
-    radial-gradient(1px 1px at 33% 60%, rgba(255,255,255,0.25)0%, transparent 100%),
-    radial-gradient(1px 1px at 77% 65%, rgba(255,255,255,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 5%  75%, rgba(255,255,255,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.35)0%, transparent 100%),
-    radial-gradient(2px 2px at 82% 88%, rgba(255,255,255,0.15)0%, transparent 100%),
-    radial-gradient(1px 1px at 42% 95%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  background:
+    radial-gradient(ellipse 100% 60% at 50% -10%, rgba(15,40,100,0.6) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 80% 10%,  rgba(61,142,248,0.08) 0%, transparent 60%);
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--d,4s) ease-in-out infinite var(--delay,0s);
+}
+@keyframes twinkle {
+  0%,100%{opacity:var(--op,.5)}
+  50%{opacity:calc(var(--op,.5)*.2)}
 }
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 56px;
-  background: rgba(4,9,15,0.88);
-  backdrop-filter: blur(20px);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  height: 54px;
+  background: rgba(4,9,15,0.85);
+  backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  padding: 0 clamp(1.5rem,4vw,3.5rem);
 }
-.logo { font-size: 15px; font-weight: 500; letter-spacing: 0.4px; color: var(--white); }
-.nav-links { display: flex; gap: 2rem; align-items: center; }
-.nav-links a { text-decoration: none; color: var(--sub); font-size: 13px; transition: color 0.15s; }
-.nav-links a:hover { color: var(--white); }
-.nav-links a.active { color: var(--white); }
-@media (max-width: 600px) { .nav-links { display: none; } }
+.logo { font-size: 15px; font-weight: 500; letter-spacing: 0.3px; }
+.nav-links { display: flex; gap: 2.2rem; }
+.nav-links a { text-decoration: none; color: var(--sub); font-size: 13px; transition: color .15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+@media(max-width:600px){ .nav-links{display:none;} }
 
 /* ── HERO ── */
 .hero {
@@ -83,35 +77,34 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: clamp(2rem, 5vw, 5rem);
-  padding: 80px clamp(1.5rem, 5vw, 5rem) 5rem;
+  gap: clamp(2rem,4vw,5rem);
+  padding: 80px clamp(1.5rem,5vw,5rem) 4rem;
   position: relative; z-index: 1;
 }
-@media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; text-align: center; }
-  .hero-right { display: none; }
+@media(max-width:768px){
+  .hero{ grid-template-columns:1fr; }
+  .hero-right{ display:none; }
 }
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: 7px;
-  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.6px;
   text-transform: uppercase; color: var(--blue);
   padding: 5px 13px; border-radius: 20px;
-  border: 1px solid var(--border-b);
+  border: 1px solid var(--bblue);
   background: rgba(61,142,248,0.07);
   margin-bottom: 1.5rem;
 }
 .eyebrow::before {
-  content: '';
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 8px var(--blue);
+  content:'';
+  width:6px;height:6px;border-radius:50%;
+  background:var(--blue); box-shadow:0 0 8px var(--blue);
   animation: blink 2s ease-in-out infinite;
 }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
 h1 {
-  font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+  font-size: clamp(2.8rem,5.5vw,4.5rem);
   font-weight: 800; line-height: 1.07;
   letter-spacing: -2.5px; margin-bottom: 1.4rem;
 }
@@ -119,185 +112,131 @@ h1 {
   font-size: 15px; color: var(--sub); line-height: 1.72;
   max-width: 400px; margin-bottom: 2.5rem;
 }
-@media (max-width: 768px) { .hero-sub { max-width: 100%; } }
-
-.btns { display: flex; gap: 12px; flex-wrap: wrap; }
-@media (max-width: 768px) { .btns { justify-content: center; } }
+.btns { display:flex; gap:12px; flex-wrap:wrap; }
 
 .btn-p {
-  padding: 12px 28px; border-radius: 50px;
-  background: var(--blue); color: var(--white);
-  font-size: 13.5px; font-weight: 600; border: none; cursor: pointer;
-  box-shadow: 0 0 28px rgba(61,142,248,0.4);
-  transition: all 0.2s; font-family: inherit;
-  letter-spacing: 0.1px;
+  padding:12px 28px; border-radius:50px;
+  background:var(--blue); color:#fff;
+  font-size:13.5px; font-weight:600; border:none; cursor:pointer;
+  box-shadow:0 0 28px rgba(61,142,248,.4);
+  transition:all .2s; font-family:inherit;
 }
-.btn-p:hover { background: var(--blue2); box-shadow: 0 0 40px rgba(61,142,248,0.55); transform: translateY(-1px); }
+.btn-p:hover{ background:var(--blue2); box-shadow:0 0 42px rgba(61,142,248,.55); transform:translateY(-1px); }
+
 .btn-s {
-  padding: 12px 28px; border-radius: 50px;
-  background: rgba(255,255,255,0.05); color: var(--white);
-  font-size: 13.5px; font-weight: 500; font-family: inherit;
-  border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
-  transition: all 0.2s;
+  padding:12px 28px; border-radius:50px;
+  background:rgba(255,255,255,.05); color:#fff;
+  font-size:13.5px; font-weight:500; font-family:inherit;
+  border:1px solid rgba(255,255,255,.1); cursor:pointer;
+  transition:all .2s;
 }
-.btn-s:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+.btn-s:hover{ background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.18); }
 
-/* ── GLOBE ── */
-.hero-right { display: flex; align-items: center; justify-content: center; }
-.globe-wrap { position: relative; width: clamp(220px, 30vw, 320px); aspect-ratio: 1; }
-.globe {
-  width: 100%; height: 100%; border-radius: 50%;
-  background: radial-gradient(circle at 30% 28%, #1c4480 0%, #0c2248 40%, #060f24 75%);
-  box-shadow:
-    0 0 0 1px rgba(61,142,248,0.12),
-    0 0 70px rgba(61,142,248,0.22),
-    0 0 140px rgba(61,142,248,0.1),
-    inset 0 0 50px rgba(61,142,248,0.08);
-  overflow: hidden; position: relative;
+/* ── GLOBE CANVAS ── */
+.hero-right {
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
 }
-.globe-grid {
-  position: absolute; inset: -25%;
-  background:
-    repeating-linear-gradient(0deg,  transparent, transparent 20px, rgba(61,142,248,0.07) 20px, rgba(61,142,248,0.07) 21px),
-    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(61,142,248,0.07) 20px, rgba(61,142,248,0.07) 21px);
-  animation: spin 28s linear infinite;
+#globeWrap {
+  position:relative;
+  width: clamp(240px,32vw,340px);
+  aspect-ratio:1;
 }
-.globe-shine {
-  position: absolute; top: 8%; left: 12%;
-  width: 38%; height: 38%; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.14) 0%, transparent 70%);
+#globeWrap::before {
+  content:'';
+  position:absolute; inset:-30%;
+  background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(61,142,248,.18) 0%, transparent 70%);
+  pointer-events:none;
+  animation: glow 4s ease-in-out infinite alternate;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes glow{from{opacity:.7}to{opacity:1.0}}
 
-/* floating particles */
-.particle {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--blue);
-  opacity: 0;
-  animation: drift 5s ease-in-out infinite;
-}
-.particle:nth-child(1){ width:4px;height:4px; top:5%;  left:60%;  animation-delay:0s;   animation-duration:5s; }
-.particle:nth-child(2){ width:3px;height:3px; top:20%; right:0%;  animation-delay:1.2s; animation-duration:6s; }
-.particle:nth-child(3){ width:5px;height:5px; bottom:15%;right:5%; animation-delay:2.5s; animation-duration:4.5s;}
-.particle:nth-child(4){ width:3px;height:3px; bottom:5%;left:30%;  animation-delay:0.8s; animation-duration:7s; }
-@keyframes drift {
-  0%  { opacity:0;  transform:translateY(0)    scale(0.8); }
-  30% { opacity:0.6; }
-  70% { opacity:0.3; }
-  100%{ opacity:0;  transform:translateY(-30px) scale(1.2); }
+#globeCanvas {
+  width:100%; height:100%;
+  display:block;
 }
 
-/* ── SECTION: Steps ── */
+/* ── SECTION ── */
 .section {
-  padding: 6rem clamp(1.5rem, 5vw, 5rem);
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border);
+  padding: 6rem clamp(1.5rem,5vw,5rem);
+  position:relative; z-index:1;
+  border-top:1px solid var(--border);
 }
-.s-top { margin-bottom: 3rem; }
-.s-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--blue); margin-bottom: 0.9rem;
-}
-.s-h2 {
-  font-size: clamp(1.9rem, 3vw, 2.6rem); font-weight: 700;
-  letter-spacing: -1px;
-}
+.s-label { font-size:10px; font-weight:700; letter-spacing:2.6px; text-transform:uppercase; color:var(--blue); margin-bottom:.9rem; }
+.s-h2 { font-size:clamp(1.9rem,3vw,2.6rem); font-weight:700; letter-spacing:-1px; margin-bottom:2.5rem; }
 
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
-.step {
-  padding: 2rem 1.6rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  transition: border-color 0.25s, background 0.25s, transform 0.2s;
-  cursor: default;
+/* cards */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.2rem; }
+.card {
+  padding:2rem 1.6rem;
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:18px;
+  transition:border-color .25s,background .25s,transform .2s;
+  cursor:default;
 }
-.step:hover {
-  border-color: var(--border-b);
-  background: var(--surface2);
-  transform: translateY(-2px);
+.card:hover { border-color:var(--bblue); background:var(--surf2); transform:translateY(-2px); }
+.card-num {
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--bblue); background:rgba(61,142,248,.08);
+  font-size:11px;font-weight:700;color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.1rem;
 }
-.step-num {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 1px solid var(--border-b);
-  background: rgba(61,142,248,0.08);
-  font-size: 11px; font-weight: 700; color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1.1rem;
-}
-.step h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.2px; }
-.step p  { font-size: 13px; color: var(--sub); line-height: 1.65; }
+.card h3 { font-size:15px;font-weight:600;margin-bottom:.5rem;letter-spacing:-.2px; }
+.card p  { font-size:13px;color:var(--sub);line-height:1.65; }
+.card-icon { font-size:22px;margin-bottom:1rem; }
 
-/* ── SECTION: Leistungen ── */
-.leistungen { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
-.leistung {
-  padding: 2.5rem 2rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  transition: all 0.25s;
-}
-.leistung:hover { border-color: var(--border-b); background: var(--surface2); transform: translateY(-2px); }
-.l-icon {
-  width: 48px; height: 48px; border-radius: 14px;
-  background: rgba(61,142,248,0.1);
-  border: 1px solid var(--border-b);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; margin-bottom: 1.2rem;
-}
-.leistung h3 { font-size: 17px; font-weight: 700; margin-bottom: 0.6rem; letter-spacing: -0.3px; }
-.leistung p  { font-size: 13.5px; color: var(--sub); line-height: 1.7; }
-
-/* ── CTA SECTION ── */
-.cta-section {
-  padding: 6rem clamp(1.5rem, 5vw, 5rem);
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border);
-  text-align: center;
+/* ── CTA ── */
+.cta-sec {
+  padding:6rem clamp(1.5rem,5vw,5rem);
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  text-align:center;
 }
 .cta-box {
-  max-width: 580px; margin: 0 auto;
-  padding: 3.5rem 2.5rem;
-  border: 1px solid var(--border-b);
-  border-radius: 24px;
-  background: rgba(61,142,248,0.04);
-  box-shadow: 0 0 60px rgba(61,142,248,0.06);
+  max-width:560px;margin:0 auto;
+  padding:3.5rem 2.5rem;
+  border:1px solid var(--bblue);
+  border-radius:24px;
+  background:rgba(61,142,248,.04);
+  box-shadow:0 0 60px rgba(61,142,248,.06);
 }
-.cta-box h2 { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 700; letter-spacing:-0.8px; margin-bottom:1rem; }
-.cta-box p  { color: var(--sub); font-size: 14.5px; line-height:1.7; margin-bottom:2rem; }
+.cta-box h2 { font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.8px;margin-bottom:1rem; }
+.cta-box p  { color:var(--sub);font-size:14.5px;line-height:1.7;margin-bottom:2rem; }
 
 /* ── FOOTER ── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 2rem clamp(1.5rem, 5vw, 5rem);
-  display: flex; align-items: center; justify-content: space-between;
-  position: relative; z-index: 1;
-  flex-wrap: wrap; gap: 1rem;
+  border-top:1px solid var(--border);
+  padding:2rem clamp(1.5rem,5vw,5rem);
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:1;
+  flex-wrap:wrap;gap:1rem;
 }
-.footer-logo { font-size: 14px; font-weight: 500; color: var(--muted); }
-.footer-copy { font-size: 12px; color: var(--muted); }
-.footer-link { color: var(--muted); text-decoration: none; font-size: 12px; transition: color 0.15s; }
-.footer-link:hover { color: var(--white); }
+footer span,.footer-link { font-size:12px;color:var(--muted); }
+.footer-link { text-decoration:none;transition:color .15s; }
+.footer-link:hover { color:var(--white); }
 
-/* ── CHATBOT BADGE ── */
+/* ── DEMO BADGE ── */
 .demo-badge {
-  position: fixed; top: 68px; right: 16px; z-index: 190;
-  background: rgba(61,142,248,0.12);
-  border: 1px solid var(--border-b);
-  border-radius: 20px; padding: 6px 14px;
-  font-size: 11px; font-weight: 600; color: var(--blue);
-  letter-spacing: 0.5px; backdrop-filter: blur(10px);
-  animation: fadeDown 0.6s ease 1.5s both;
-  pointer-events: none;
+  position:fixed;top:66px;right:16px;z-index:290;
+  background:rgba(61,142,248,.12);
+  border:1px solid var(--bblue);
+  border-radius:20px;padding:5px 13px;
+  font-size:11px;font-weight:600;color:var(--blue);
+  letter-spacing:.5px;backdrop-filter:blur(10px);
+  animation:fadeDown .6s ease 1s both;
+  pointer-events:none;
 }
-@keyframes fadeDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-<div class="stars"></div>
 
-<!-- DEMO BADGE -->
+<!-- Stars injected by JS -->
+<div id="stars"></div>
+
+<!-- Demo badge -->
 <div class="demo-badge">✦ DEMO ANSICHT</div>
 
 <!-- NAV -->
@@ -314,7 +253,7 @@ footer {
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-    <span class="eyebrow">Voice Agents & Websites</span>
+    <span class="eyebrow">Voice Agents &amp; Websites</span>
     <h1>Ihr Unternehmen.<br>Immer erreichbar.</h1>
     <p class="hero-sub">Wir entwickeln KI Voice-Agents, welche Ihr Unternehmen rund um die Uhr erreichbar machen und Websites, die aus Besuchern Kunden machen.</p>
     <div class="btns">
@@ -323,66 +262,35 @@ footer {
     </div>
   </div>
   <div class="hero-right">
-    <div class="globe-wrap">
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="globe">
-        <div class="globe-grid"></div>
-        <div class="globe-shine"></div>
-      </div>
+    <div id="globeWrap">
+      <canvas id="globeCanvas"></canvas>
     </div>
   </div>
 </section>
 
 <!-- ABLAUF -->
 <section class="section" id="ablauf">
-  <div class="s-top">
-    <div class="s-label">Ablauf</div>
-    <h2 class="s-h2">Drei Schritte, ein Ergebnis</h2>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <h3>Konzept</h3>
-      <p>Ziele und Anforderungen klären — in einem kurzen, unverbindlichen Gespräch.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <h3>Entwicklung</h3>
-      <p>Voice-Agent einrichten und Website entwickeln — massgeschneidert für Ihr Unternehmen.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <h3>Finalisierung</h3>
-      <p>Nach Einrichtung und Einweisung ist das Projekt sofort einsatzbereit.</p>
-    </div>
+  <div class="s-label">Ablauf</div>
+  <h2 class="s-h2">Drei Schritte, ein Ergebnis</h2>
+  <div class="cards">
+    <div class="card"><div class="card-num">01</div><h3>Konzept</h3><p>Ziele und Anforderungen klären — in einem kurzen, unverbindlichen Gespräch.</p></div>
+    <div class="card"><div class="card-num">02</div><h3>Entwicklung</h3><p>Voice-Agent einrichten und Website entwickeln — massgeschneidert für Ihr Unternehmen.</p></div>
+    <div class="card"><div class="card-num">03</div><h3>Finalisierung</h3><p>Nach Einrichtung und Einweisung ist das Projekt sofort einsatzbereit.</p></div>
   </div>
 </section>
 
 <!-- LEISTUNGEN -->
 <section class="section" id="leistungen">
-  <div class="s-top">
-    <div class="s-label">Leistungen</div>
-    <h2 class="s-h2">Was voxaro bietet</h2>
-  </div>
-  <div class="leistungen">
-    <div class="leistung">
-      <div class="l-icon">🎙️</div>
-      <h3>Voice Agent</h3>
-      <p>KI-Agenten nehmen Anrufe entgegen, beantworten Fragen und leiten Anliegen weiter — vollautomatisch, rund um die Uhr, ohne menschliches Zutun.</p>
-    </div>
-    <div class="leistung">
-      <div class="l-icon">🌐</div>
-      <h3>Websites</h3>
-      <p>Professionelle Auftritte, die online ähnlich vertrauenswürdig wirken wie ein persönlicher Kontakt. Besucher werden zu Kunden.</p>
-    </div>
+  <div class="s-label">Leistungen</div>
+  <h2 class="s-h2">Was voxaro bietet</h2>
+  <div class="cards">
+    <div class="card"><div class="card-icon">🎙️</div><h3>Voice Agent</h3><p>KI-Agenten nehmen Anrufe entgegen, beantworten Fragen und leiten Anliegen weiter — vollautomatisch, rund um die Uhr.</p></div>
+    <div class="card"><div class="card-icon">🌐</div><h3>Websites</h3><p>Professionelle Auftritte, die online ähnlich vertrauenswürdig wirken wie ein persönlicher Kontakt.</p></div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section" id="kontakt">
+<section class="cta-sec" id="kontakt">
   <div class="cta-box">
     <h2>Bereit, dass Sie jederzeit erreichbar sind?</h2>
     <p>Sprechen Sie uns an — wir zeigen Ihnen in einem kurzen Gespräch, was für Ihr Unternehmen möglich ist.</p>
@@ -392,13 +300,153 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">voxaro</div>
-  <div class="footer-copy">© 2026 voxaro</div>
+  <span style="font-weight:500;color:var(--muted)">voxaro</span>
+  <span>© 2026 voxaro</span>
   <a href="mailto:info@voxaro.ch" class="footer-link">info@voxaro.ch</a>
 </footer>
 
 <!-- CHATBOT WIDGET -->
 <script src="/voxaro-widget.js" defer></script>
 
+<script>
+/* ── Inject stars ── */
+(function(){
+  const c=document.getElementById('stars');
+  const data=[
+    [.08,.10,1,.7,4],[.25,.05,1,.5,5],[.48,.18,1,.4,6],[.70,.08,1,.6,4.5],
+    [.88,.22,1,.4,5],[.15,.35,1.5,.2,7],[.60,.42,1,.3,5],[.92,.50,1,.35,4],
+    [.33,.60,1,.25,6],[.77,.65,1,.3,5],[.05,.75,1,.4,4],[.55,.80,1,.2,7],
+    [.20,.90,1,.35,5],[.82,.88,1.5,.15,6],[.42,.95,1,.3,4],[.65,.30,1,.5,3.5],
+    [.10,.55,1,.4,5],[.90,.70,1,.2,6],[.38,.20,1,.45,4],[.72,.45,1,.35,5.5],
+    [.52,.12,1,.5,4],[.17,.68,1,.3,6],[.84,.35,1,.25,5],[.30,.80,1.5,.2,7],
+    [.95,.15,1,.4,4],[.44,.48,1,.3,5],[.63,.72,1,.35,4.5],[.78,.92,1,.2,6],
+  ];
+  data.forEach(([x,y,s,op,d],i)=>{
+    const el=document.createElement('div');
+    el.className='star';
+    el.style.cssText=`left:${x*100}%;top:${y*100}%;width:${s}px;height:${s}px;--op:${op};--d:${d}s;--delay:${(i%5)*.4}s`;
+    c.appendChild(el);
+  });
+})();
+
+/* ── Globe renderer ── */
+(function(){
+  const canvas = document.getElementById('globeCanvas');
+  const wrap   = document.getElementById('globeWrap');
+  const ctx    = canvas.getContext('2d');
+
+  let R, cx, cy, rot = 0;
+  const BLUE   = '#3d8ef8';
+  const BLUE_A = 'rgba(61,142,248,';
+
+  function resize(){
+    const s = wrap.offsetWidth;
+    canvas.width  = s * devicePixelRatio;
+    canvas.height = s * devicePixelRatio;
+    canvas.style.width  = s + 'px';
+    canvas.style.height = s + 'px';
+    R  = s * devicePixelRatio * 0.42;
+    cx = canvas.width  / 2;
+    cy = canvas.height / 2;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* Project 3-D sphere point (lon, lat) → 2-D canvas point.
+     lon=0 faces the viewer; we rotate lon by `rot` each frame. */
+  function project(lon, lat){
+    const lo = lon + rot;
+    const x3 =  Math.cos(lat) * Math.sin(lo);
+    const y3 = -Math.sin(lat);
+    const z3 =  Math.cos(lat) * Math.cos(lo);
+    return { x: cx + R * x3, y: cy + R * y3, z: z3 };
+  }
+
+  function drawArc(pts, alpha){
+    if(!pts.length) return;
+    ctx.beginPath();
+    pts.forEach((p,i)=> i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle = BLUE_A + alpha + ')';
+    ctx.stroke();
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const dpr = devicePixelRatio;
+
+    /* base sphere fill */
+    const grd = ctx.createRadialGradient(cx-R*.25,cy-R*.25,0,cx,cy,R);
+    grd.addColorStop(0,'#1a3a6e');
+    grd.addColorStop(.5,'#0c2248');
+    grd.addColorStop(1,'#060f24');
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    /* clip to sphere for lines */
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.clip();
+
+    const STEPS = 60;  /* smoothness of lines */
+    const lw    = .9 * dpr;
+    ctx.lineWidth = lw;
+
+    /* latitude lines */
+    const lats = [-60,-40,-20,0,20,40,60].map(d=>d*Math.PI/180);
+    lats.forEach(lat=>{
+      const front=[], back=[];
+      for(let i=0;i<=STEPS;i++){
+        const lon=(i/STEPS)*Math.PI*2-Math.PI;
+        const p=project(lon,lat);
+        (p.z>=0?front:back).push(p);
+      }
+      drawArc(back, 0.09);
+      drawArc(front, lat===0 ? 0.28 : 0.18);
+    });
+
+    /* longitude lines */
+    const lons=[];
+    for(let i=0;i<12;i++) lons.push(i*Math.PI/6-Math.PI);
+    lons.forEach(baseLon=>{
+      const front=[], back=[];
+      for(let i=0;i<=STEPS;i++){
+        const lat=(i/STEPS)*Math.PI-Math.PI/2;
+        const p=project(baseLon,lat);
+        (p.z>=0?front:back).push(p);
+      }
+      drawArc(back, 0.09);
+      drawArc(front, 0.18);
+    });
+
+    ctx.restore();
+
+    /* outer ring */
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.strokeStyle = BLUE_A+'0.3)';
+    ctx.lineWidth = 1 * dpr;
+    ctx.stroke();
+
+    /* highlight shimmer */
+    const sh = ctx.createRadialGradient(cx-R*.32,cy-R*.32,0,cx-R*.3,cy-R*.3,R*.55);
+    sh.addColorStop(0,'rgba(255,255,255,0.12)');
+    sh.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,0,Math.PI*2);
+    ctx.clip();
+    ctx.fillStyle=sh;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.restore();
+
+    rot += 0.004;
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
 </body>
 </html>
