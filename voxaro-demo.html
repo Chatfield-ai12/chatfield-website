@@ -3,24 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Voxaro – Chatbot Vorschau</title>
+<title>voxaro – KI-Voice-Agents & Websites</title>
 <meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;}
-  body{background:#0f172a;color:#e2e8f0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;}
-  .box{max-width:560px;}
-  h1{font-size:2rem;font-weight:800;color:#fff;margin-bottom:.75rem;letter-spacing:-.02em;}
-  h1 span{background:linear-gradient(135deg,#6366f1,#818cf8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  p{color:#94a3b8;line-height:1.7;font-size:1.05rem;}
-  .hint{margin-top:2rem;font-size:14px;color:#64748b;border:1px dashed #334155;border-radius:12px;padding:1rem 1.25rem;}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:    #04090f;
+  --blue:  #3d8ef8;
+  --blue2: #2a7ae8;
+  --white: #ffffff;
+  --muted: rgba(255,255,255,0.4);
+  --sub:   rgba(255,255,255,0.62);
+  --border:  rgba(255,255,255,0.07);
+  --border-b:rgba(61,142,248,0.22);
+  --surface: rgba(255,255,255,0.03);
+  --surface2:rgba(255,255,255,0.055);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARS ── */
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(20,50,110,0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 35% at 85% 15%, rgba(61,142,248,0.1) 0%, transparent 60%);
+}
+.stars::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 5%,  rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 18%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 8%,  rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 22%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 35%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 42%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 50%, rgba(255,255,255,0.35)0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 60%, rgba(255,255,255,0.25)0%, transparent 100%),
+    radial-gradient(1px 1px at 77% 65%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5%  75%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.35)0%, transparent 100%),
+    radial-gradient(2px 2px at 82% 88%, rgba(255,255,255,0.15)0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 95%, rgba(255,255,255,0.3) 0%, transparent 100%);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 56px;
+  background: rgba(4,9,15,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
+}
+.logo { font-size: 15px; font-weight: 500; letter-spacing: 0.4px; color: var(--white); }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--sub); font-size: 13px; transition: color 0.15s; }
+.nav-links a:hover { color: var(--white); }
+.nav-links a.active { color: var(--white); }
+@media (max-width: 600px) { .nav-links { display: none; } }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: 80px clamp(1.5rem, 5vw, 5rem) 5rem;
+  position: relative; z-index: 1;
+}
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .hero-right { display: none; }
+}
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--blue);
+  padding: 5px 13px; border-radius: 20px;
+  border: 1px solid var(--border-b);
+  background: rgba(61,142,248,0.07);
+  margin-bottom: 1.5rem;
+}
+.eyebrow::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px var(--blue);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+h1 {
+  font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+  font-weight: 800; line-height: 1.07;
+  letter-spacing: -2.5px; margin-bottom: 1.4rem;
+}
+.hero-sub {
+  font-size: 15px; color: var(--sub); line-height: 1.72;
+  max-width: 400px; margin-bottom: 2.5rem;
+}
+@media (max-width: 768px) { .hero-sub { max-width: 100%; } }
+
+.btns { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 768px) { .btns { justify-content: center; } }
+
+.btn-p {
+  padding: 12px 28px; border-radius: 50px;
+  background: var(--blue); color: var(--white);
+  font-size: 13.5px; font-weight: 600; border: none; cursor: pointer;
+  box-shadow: 0 0 28px rgba(61,142,248,0.4);
+  transition: all 0.2s; font-family: inherit;
+  letter-spacing: 0.1px;
+}
+.btn-p:hover { background: var(--blue2); box-shadow: 0 0 40px rgba(61,142,248,0.55); transform: translateY(-1px); }
+.btn-s {
+  padding: 12px 28px; border-radius: 50px;
+  background: rgba(255,255,255,0.05); color: var(--white);
+  font-size: 13.5px; font-weight: 500; font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-s:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+
+/* ── GLOBE ── */
+.hero-right { display: flex; align-items: center; justify-content: center; }
+.globe-wrap { position: relative; width: clamp(220px, 30vw, 320px); aspect-ratio: 1; }
+.globe {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle at 30% 28%, #1c4480 0%, #0c2248 40%, #060f24 75%);
+  box-shadow:
+    0 0 0 1px rgba(61,142,248,0.12),
+    0 0 70px rgba(61,142,248,0.22),
+    0 0 140px rgba(61,142,248,0.1),
+    inset 0 0 50px rgba(61,142,248,0.08);
+  overflow: hidden; position: relative;
+}
+.globe-grid {
+  position: absolute; inset: -25%;
+  background:
+    repeating-linear-gradient(0deg,  transparent, transparent 20px, rgba(61,142,248,0.07) 20px, rgba(61,142,248,0.07) 21px),
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(61,142,248,0.07) 20px, rgba(61,142,248,0.07) 21px);
+  animation: spin 28s linear infinite;
+}
+.globe-shine {
+  position: absolute; top: 8%; left: 12%;
+  width: 38%; height: 38%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.14) 0%, transparent 70%);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0;
+  animation: drift 5s ease-in-out infinite;
+}
+.particle:nth-child(1){ width:4px;height:4px; top:5%;  left:60%;  animation-delay:0s;   animation-duration:5s; }
+.particle:nth-child(2){ width:3px;height:3px; top:20%; right:0%;  animation-delay:1.2s; animation-duration:6s; }
+.particle:nth-child(3){ width:5px;height:5px; bottom:15%;right:5%; animation-delay:2.5s; animation-duration:4.5s;}
+.particle:nth-child(4){ width:3px;height:3px; bottom:5%;left:30%;  animation-delay:0.8s; animation-duration:7s; }
+@keyframes drift {
+  0%  { opacity:0;  transform:translateY(0)    scale(0.8); }
+  30% { opacity:0.6; }
+  70% { opacity:0.3; }
+  100%{ opacity:0;  transform:translateY(-30px) scale(1.2); }
+}
+
+/* ── SECTION: Steps ── */
+.section {
+  padding: 6rem clamp(1.5rem, 5vw, 5rem);
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+}
+.s-top { margin-bottom: 3rem; }
+.s-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--blue); margin-bottom: 0.9rem;
+}
+.s-h2 {
+  font-size: clamp(1.9rem, 3vw, 2.6rem); font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
+.step {
+  padding: 2rem 1.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  cursor: default;
+}
+.step:hover {
+  border-color: var(--border-b);
+  background: var(--surface2);
+  transform: translateY(-2px);
+}
+.step-num {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border-b);
+  background: rgba(61,142,248,0.08);
+  font-size: 11px; font-weight: 700; color: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.1rem;
+}
+.step h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.2px; }
+.step p  { font-size: 13px; color: var(--sub); line-height: 1.65; }
+
+/* ── SECTION: Leistungen ── */
+.leistungen { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.leistung {
+  padding: 2.5rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: all 0.25s;
+}
+.leistung:hover { border-color: var(--border-b); background: var(--surface2); transform: translateY(-2px); }
+.l-icon {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: rgba(61,142,248,0.1);
+  border: 1px solid var(--border-b);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 1.2rem;
+}
+.leistung h3 { font-size: 17px; font-weight: 700; margin-bottom: 0.6rem; letter-spacing: -0.3px; }
+.leistung p  { font-size: 13.5px; color: var(--sub); line-height: 1.7; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding: 6rem clamp(1.5rem, 5vw, 5rem);
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.cta-box {
+  max-width: 580px; margin: 0 auto;
+  padding: 3.5rem 2.5rem;
+  border: 1px solid var(--border-b);
+  border-radius: 24px;
+  background: rgba(61,142,248,0.04);
+  box-shadow: 0 0 60px rgba(61,142,248,0.06);
+}
+.cta-box h2 { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 700; letter-spacing:-0.8px; margin-bottom:1rem; }
+.cta-box p  { color: var(--sub); font-size: 14.5px; line-height:1.7; margin-bottom:2rem; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem clamp(1.5rem, 5vw, 5rem);
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 1;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-logo { font-size: 14px; font-weight: 500; color: var(--muted); }
+.footer-copy { font-size: 12px; color: var(--muted); }
+.footer-link { color: var(--muted); text-decoration: none; font-size: 12px; transition: color 0.15s; }
+.footer-link:hover { color: var(--white); }
+
+/* ── CHATBOT BADGE ── */
+.demo-badge {
+  position: fixed; top: 68px; right: 16px; z-index: 190;
+  background: rgba(61,142,248,0.12);
+  border: 1px solid var(--border-b);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 11px; font-weight: 600; color: var(--blue);
+  letter-spacing: 0.5px; backdrop-filter: blur(10px);
+  animation: fadeDown 0.6s ease 1.5s both;
+  pointer-events: none;
+}
+@keyframes fadeDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Voxaro <span>Chatbot</span> – Vorschau</h1>
-    <p>So würde der KI-Assistent auf voxaro.ch aussehen. Klick unten rechts auf das Chat-Symbol und stell ihm eine Frage.</p>
-    <div class="hint">Diese Seite dient nur zur Vorschau. Auf der echten Website erscheint der Assistent als schwebendes Chat-Fenster – das Design passt sich an.</div>
+<div class="stars"></div>
+
+<!-- DEMO BADGE -->
+<div class="demo-badge">✦ DEMO ANSICHT</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">voxaro</div>
+  <div class="nav-links">
+    <a href="#" class="active">Start</a>
+    <a href="#leistungen">Leistungen</a>
+    <a href="#ablauf">Ablauf</a>
+    <a href="#kontakt">Kontakt</a>
   </div>
-  <script src="/voxaro-widget.js" defer></script>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="eyebrow">Voice Agents & Websites</span>
+    <h1>Ihr Unternehmen.<br>Immer erreichbar.</h1>
+    <p class="hero-sub">Wir entwickeln KI Voice-Agents, welche Ihr Unternehmen rund um die Uhr erreichbar machen und Websites, die aus Besuchern Kunden machen.</p>
+    <div class="btns">
+      <button class="btn-p">Projekt starten</button>
+      <button class="btn-s">voxaro entdecken</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="globe-wrap">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="globe">
+        <div class="globe-grid"></div>
+        <div class="globe-shine"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABLAUF -->
+<section class="section" id="ablauf">
+  <div class="s-top">
+    <div class="s-label">Ablauf</div>
+    <h2 class="s-h2">Drei Schritte, ein Ergebnis</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Konzept</h3>
+      <p>Ziele und Anforderungen klären — in einem kurzen, unverbindlichen Gespräch.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Entwicklung</h3>
+      <p>Voice-Agent einrichten und Website entwickeln — massgeschneidert für Ihr Unternehmen.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Finalisierung</h3>
+      <p>Nach Einrichtung und Einweisung ist das Projekt sofort einsatzbereit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEISTUNGEN -->
+<section class="section" id="leistungen">
+  <div class="s-top">
+    <div class="s-label">Leistungen</div>
+    <h2 class="s-h2">Was voxaro bietet</h2>
+  </div>
+  <div class="leistungen">
+    <div class="leistung">
+      <div class="l-icon">🎙️</div>
+      <h3>Voice Agent</h3>
+      <p>KI-Agenten nehmen Anrufe entgegen, beantworten Fragen und leiten Anliegen weiter — vollautomatisch, rund um die Uhr, ohne menschliches Zutun.</p>
+    </div>
+    <div class="leistung">
+      <div class="l-icon">🌐</div>
+      <h3>Websites</h3>
+      <p>Professionelle Auftritte, die online ähnlich vertrauenswürdig wirken wie ein persönlicher Kontakt. Besucher werden zu Kunden.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="kontakt">
+  <div class="cta-box">
+    <h2>Bereit, dass Sie jederzeit erreichbar sind?</h2>
+    <p>Sprechen Sie uns an — wir zeigen Ihnen in einem kurzen Gespräch, was für Ihr Unternehmen möglich ist.</p>
+    <button class="btn-p" style="font-size:14px;padding:13px 32px;">Bereit für voxaro?</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">voxaro</div>
+  <div class="footer-copy">© 2026 voxaro</div>
+  <a href="mailto:info@voxaro.ch" class="footer-link">info@voxaro.ch</a>
+</footer>
+
+<!-- CHATBOT WIDGET -->
+<script src="/voxaro-widget.js" defer></script>
+
 </body>
 </html>
