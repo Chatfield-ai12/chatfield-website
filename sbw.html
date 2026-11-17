@@ -3,146 +3,815 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SBW Assistent – Demo</title>
+<title>SBW × Chatfield – KI-Assistent</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="/sbw-avatar.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --green: #66C838; --green-dark: #4e9e28; --green-soft: #eefbe6;
-  --ink: #16281a; --gray: #64748b; --line: #e6ebe4; --bg: #f3f8ef; --white: #fff;
-}
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: 'Inter', sans-serif; color: var(--ink);
-  background: radial-gradient(1200px 600px at 50% -10%, #e4f6d6 0%, var(--bg) 55%);
-  min-height: 100svh; display: flex; flex-direction: column; align-items: center;
-  padding: 2rem 1rem; line-height: 1.6;
-}
-.intro { text-align: center; max-width: 560px; margin-bottom: 1.5rem; }
-.intro .pill { display: inline-flex; align-items: center; gap: 7px; background: var(--white); border: 1px solid var(--line); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 1rem; }
-.intro h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
-.intro p { color: var(--gray); font-size: 15px; margin-top: 0.5rem; }
 
-/* CHAT CARD */
-.chat { width: 100%; max-width: 440px; background: var(--white); border-radius: 22px; overflow: hidden;
-  box-shadow: 0 30px 70px rgba(22,40,26,0.16), 0 6px 18px rgba(22,40,26,0.08); display: flex; flex-direction: column; }
-.head { background: linear-gradient(135deg, var(--green-dark), var(--green)); padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
-.head-ava { width: 46px; height: 46px; border-radius: 13px; background: var(--white); overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.head-ava img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 85%; animation: hop-idle 3.4s ease-in-out infinite; }
-/* gentle idle "breathing/bob" so the rabbit feels alive */
-@keyframes hop-idle { 0%,100% { transform: translateY(0) scale(1) rotate(0deg); } 50% { transform: translateY(-2.5px) scale(1.035) rotate(0deg); } }
-/* happy reaction hop when the bot answers */
-.head-ava img.react { animation: hop-react 0.75s ease; }
+:root {
+  --green: #66C838;
+  --green-dark: #4e9e28;
+  --green-light: #eefbe6;
+  --green-mid: #d4f5c0;
+  --ink: #111827;
+  --ink-soft: #374151;
+  --gray: #6B7280;
+  --gray-light: #9CA3AF;
+  --line: #E5E7EB;
+  --surface: #F7FBF4;
+  --white: #FFFFFF;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── NAVBAR ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 15px; color: var(--ink);
+  text-decoration: none;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 rgba(102,200,56,0.5);
+  animation: live-dot 2s infinite;
+}
+@keyframes live-dot {
+  0% { box-shadow: 0 0 0 0 rgba(102,200,56,0.6); }
+  70% { box-shadow: 0 0 0 7px rgba(102,200,56,0); }
+  100% { box-shadow: 0 0 0 0 rgba(102,200,56,0); }
+}
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a {
+  font-size: 14px; font-weight: 500; color: var(--gray);
+  text-decoration: none; transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-cta {
+  font-size: 13px; font-weight: 600;
+  background: var(--green);
+  color: var(--white);
+  padding: 8px 18px; border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.nav-cta:hover { background: var(--green-dark); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100svh;
+  padding: 80px 2rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 80px; gap: 2.5rem; }
+}
+
+.hero-left { max-width: 520px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600;
+  color: var(--green-dark);
+  background: var(--green-light);
+  border: 1px solid var(--green-mid);
+  padding: 5px 12px; border-radius: 20px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.01em;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+}
+.hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.hero-title em {
+  font-style: normal;
+  color: var(--green-dark);
+}
+.hero-sub {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 440px;
+}
+.hero-stats {
+  display: flex; gap: 2rem;
+  margin-bottom: 2rem;
+}
+.stat-item { }
+.stat-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.stat-label {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 3px;
+  font-weight: 500;
+}
+.hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 15px; font-weight: 600;
+  padding: 13px 24px; border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--ink-soft);
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.btn-secondary:hover { color: var(--ink); }
+.btn-secondary svg { opacity: 0.5; }
+
+/* ─── CHAT WIDGET ─── */
+.hero-right { display: flex; justify-content: center; align-items: flex-start; }
+.chat {
+  width: 100%; max-width: 400px;
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.06),
+    0 24px 60px rgba(17,24,39,0.14),
+    0 8px 20px rgba(17,24,39,0.07);
+  display: flex; flex-direction: column;
+}
+.chat-head {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-ava {
+  width: 42px; height: 42px; border-radius: 11px;
+  background: rgba(255,255,255,0.2);
+  overflow: hidden; flex-shrink: 0;
+}
+.chat-ava img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform-origin: 50% 85%;
+  animation: hop-idle 3.4s ease-in-out infinite;
+}
+@keyframes hop-idle {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2.5px) scale(1.03); }
+}
+.chat-ava img.react { animation: hop-react 0.75s ease; }
 @keyframes hop-react {
   0% { transform: translateY(0) scale(1) rotate(0deg); }
-  25% { transform: translateY(-7px) scale(1.08) rotate(-5deg); }
+  25% { transform: translateY(-7px) scale(1.09) rotate(-5deg); }
   50% { transform: translateY(0) scale(1) rotate(4deg); }
   70% { transform: translateY(-3px) scale(1.04) rotate(-2deg); }
   100% { transform: translateY(0) scale(1) rotate(0deg); }
 }
-@media (prefers-reduced-motion: reduce) { .head-ava img { animation: none; } }
-.head-name { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
-.head-status { font-size: 12px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
-.head-dot { width: 7px; height: 7px; border-radius: 50%; background: #d7ffb0; box-shadow: 0 0 0 0 rgba(215,255,176,0.7); animation: pulse 2s infinite; }
-@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(215,255,176,0.6)} 70%{box-shadow:0 0 0 7px rgba(215,255,176,0)} 100%{box-shadow:0 0 0 0 rgba(215,255,176,0)} }
-
-.msgs { padding: 18px 14px; display: flex; flex-direction: column; gap: 10px; background: #fbfdf9; min-height: 300px; max-height: 420px; overflow-y: auto; }
-.msgs::-webkit-scrollbar { width: 4px; } .msgs::-webkit-scrollbar-thumb { background: #d4ddcf; border-radius: 3px; }
-.row-bot { display: flex; align-items: flex-end; gap: 7px; align-self: flex-start; max-width: 88%; }
-.mini-ava { width: 26px; height: 26px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-.mini-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.bubble-bot { background: var(--white); border: 1px solid var(--line); border-radius: 4px 15px 15px 15px; padding: 11px 14px; font-size: 14px; color: var(--ink); line-height: 1.55; white-space: pre-wrap; }
-.row-user { align-self: flex-end; max-width: 86%; }
-.bubble-user { background: linear-gradient(135deg, var(--green-dark), var(--green)); color: var(--white); border-radius: 15px 4px 15px 15px; padding: 11px 14px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
-.typing-wrap { display: flex; gap: 4px; align-items: center; padding: 3px 2px; }
-.typing-wrap span { width: 6px; height: 6px; border-radius: 50%; background: #bcc9b4; animation: bounce 1.2s infinite; }
-.typing-wrap span:nth-child(2){animation-delay:.2s} .typing-wrap span:nth-child(3){animation-delay:.4s}
+@media (prefers-reduced-motion: reduce) { .chat-ava img { animation: none; } }
+.chat-name { font-size: 15px; font-weight: 700; color: #fff; }
+.chat-status {
+  font-size: 11.5px; color: rgba(255,255,255,0.88);
+  display: flex; align-items: center; gap: 5px; margin-top: 2px;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #c8ffb0;
+  box-shadow: 0 0 0 0 rgba(200,255,176,0.6);
+  animation: live-dot 2s infinite;
+}
+.chat-msgs {
+  padding: 14px 12px;
+  display: flex; flex-direction: column; gap: 9px;
+  background: #fafcf8;
+  min-height: 260px; max-height: 360px;
+  overflow-y: auto;
+}
+.chat-msgs::-webkit-scrollbar { width: 3px; }
+.chat-msgs::-webkit-scrollbar-thumb { background: #cdd8c9; border-radius: 3px; }
+.row-bot { display: flex; align-items: flex-end; gap: 6px; align-self: flex-start; max-width: 90%; }
+.mini-ava { width: 24px; height: 24px; border-radius: 7px; overflow: hidden; flex-shrink: 0; }
+.mini-ava img { width: 100%; height: 100%; object-fit: cover; }
+.bubble-bot {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: 3px 14px 14px 14px;
+  padding: 10px 13px; font-size: 13.5px; color: var(--ink);
+  line-height: 1.55; white-space: pre-wrap;
+}
+.row-user { align-self: flex-end; max-width: 88%; }
+.bubble-user {
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  color: #fff;
+  border-radius: 14px 3px 14px 14px;
+  padding: 10px 13px; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap;
+}
+.typing-wrap { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
+.typing-wrap span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #b8c9b2; animation: bounce 1.2s infinite;
+}
+.typing-wrap span:nth-child(2){animation-delay:.18s}
+.typing-wrap span:nth-child(3){animation-delay:.36s}
 @keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-5px);opacity:1} }
+.chat-chips {
+  padding: 8px 12px;
+  display: flex; gap: 5px; flex-wrap: wrap;
+  background: var(--white); border-top: 1px solid var(--line);
+}
+.chip {
+  font-size: 12px; padding: 5px 10px;
+  border: 1px solid var(--line); border-radius: 14px;
+  background: var(--green-light); color: var(--green-dark);
+  cursor: pointer; font-family: inherit; font-weight: 500;
+  transition: all 0.13s;
+}
+.chip:hover { background: var(--green); color: #fff; border-color: var(--green); }
+.chat-inp {
+  display: flex; gap: 7px; padding: 10px 12px;
+  background: var(--white); border-top: 1px solid var(--line);
+}
+.inp-field {
+  flex: 1; padding: 9px 13px;
+  border: 1px solid var(--line); border-radius: 20px;
+  background: #fafcf8;
+  font-size: 13px; font-family: inherit; color: var(--ink);
+  outline: none; transition: border-color 0.13s;
+}
+.inp-field:focus { border-color: var(--green); background: #fff; }
+.send-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform 0.13s;
+}
+.send-btn:hover { transform: scale(1.07); }
+.send-btn svg { width: 15px; height: 15px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
-.chips { padding: 10px 14px; display: flex; gap: 6px; flex-wrap: wrap; background: var(--white); border-top: 1px solid var(--line); }
-.chip { font-size: 12.5px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--green-soft); color: var(--green-dark); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.15s; }
-.chip:hover { background: var(--green); color: var(--white); border-color: var(--green); }
-.inp-row { display: flex; gap: 8px; padding: 12px 14px; background: var(--white); border-top: 1px solid var(--line); }
-.inp { flex: 1; padding: 11px 15px; border: 1px solid var(--line); border-radius: 22px; background: #fbfdf9; font-size: 14px; font-family: inherit; color: var(--ink); outline: none; transition: border-color 0.15s; }
-.inp:focus { border-color: var(--green); background: var(--white); }
-.send { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--green-dark), var(--green)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.15s; }
-.send:hover { transform: scale(1.06); }
-.send svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.foot { text-align: center; font-size: 12px; color: #9aa89a; margin-top: 1.25rem; }
-.foot a { color: var(--green-dark); text-decoration: none; font-weight: 600; }
+/* ─── SECTION BASE ─── */
+section {
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-eyebrow {
+  font-size: 12px; font-weight: 600;
+  color: var(--green-dark);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+}
+.section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--gray);
+  line-height: 1.65;
+  max-width: 540px;
+}
+
+/* ─── FEATURES ─── */
+.features-section { background: var(--surface); border-radius: 24px; padding: 5rem 3rem; }
+@media (max-width: 700px) { .features-section { padding: 3rem 1.5rem; } }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.feature-card:hover {
+  box-shadow: 0 8px 30px rgba(102,200,56,0.1), 0 2px 8px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+.feature-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 1rem;
+}
+.feature-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink); margin-bottom: 0.4rem;
+}
+.feature-desc {
+  font-size: 14px; color: var(--gray);
+  line-height: 1.6;
+}
+
+/* ─── LAYERS ─── */
+.layers-wrap {
+  margin-top: 4rem;
+  position: relative;
+}
+.layers-line {
+  position: absolute;
+  left: 28px; top: 44px; bottom: 44px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--green), var(--green-mid), transparent);
+}
+@media (max-width: 700px) { .layers-line { display: none; } }
+
+.layer {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.layer.visible { opacity: 1; transform: translateY(0); }
+
+.layer-num-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 4px;
+}
+.layer-num {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--green-light);
+  border: 1.5px solid var(--green-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 900;
+  color: var(--green-dark);
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.layer-body {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+.layer-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  color: var(--green-dark);
+  background: var(--green-light);
+  padding: 3px 8px; border-radius: 6px;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.layer-title {
+  font-size: 17px; font-weight: 700;
+  color: var(--ink); margin-bottom: 0.4rem;
+}
+.layer-desc {
+  font-size: 14px; color: var(--ink-soft);
+  line-height: 1.65; margin-bottom: 0.75rem;
+}
+.layer-detail {
+  font-size: 12.5px; color: var(--gray);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Inter', monospace;
+  line-height: 1.6;
+}
+
+/* ─── RESULTS ─── */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+@media (max-width: 700px) { .results-grid { grid-template-columns: 1fr; } }
+.result-card {
+  border: 1px solid var(--line);
+  border-radius: 16px; padding: 2rem;
+  text-align: center;
+}
+.result-num {
+  font-size: 3rem; font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.result-num span { color: var(--green); }
+.result-label {
+  font-size: 14px; color: var(--gray);
+  margin-top: 0.5rem; line-height: 1.4;
+}
+
+/* ─── PRICING / CTA ─── */
+.cta-block {
+  background: linear-gradient(135deg, #1a2e14 0%, #0f1f0a 100%);
+  border-radius: 24px;
+  padding: 4rem 3rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+@media (max-width: 700px) { .cta-block { padding: 2.5rem 1.5rem; } }
+.cta-block .section-title { color: #fff; }
+.cta-block .section-sub { color: rgba(255,255,255,0.65); margin: 0 auto; }
+.cta-actions {
+  display: flex; gap: 1rem; justify-content: center;
+  flex-wrap: wrap; margin-top: 2rem;
+}
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 600;
+  padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; transition: all 0.15s;
+}
+.cta-btn-primary {
+  background: var(--green); color: #fff;
+}
+.cta-btn-primary:hover { background: #78d44a; transform: translateY(-1px); }
+.cta-btn-secondary {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+}
+.cta-btn-secondary:hover { background: rgba(255,255,255,0.14); }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 2rem;
+  text-align: center;
+  font-size: 13px; color: var(--gray-light);
+}
+footer a { color: var(--green-dark); text-decoration: none; font-weight: 600; }
+footer a:hover { color: var(--ink); }
+
+/* ─── SECTION WRAPPER ─── */
+.section-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-header { margin-bottom: 3rem; }
+
+/* ─── SCROLL ANIMATE ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<div class="intro">
-  <div class="pill">🎓 Demo · KI-Assistent für SBW</div>
-  <h1>Der SBW Assistent</h1>
-  <p>Beantwortet Fragen zu Schulen, Standorten und Angeboten – und leitet an die richtige Stelle weiter. Stell ihm eine Frage.</p>
-</div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="nav-logo-dot"></span>
+    SBW × Chatfield
+  </a>
+  <div class="nav-links">
+    <a href="#features">Funktionen</a>
+    <a href="#layers">Technik</a>
+    <a href="#demo-cta">Demo</a>
+    <a class="nav-cta" href="#demo-cta">Gespräch anfragen</a>
+  </div>
+</nav>
 
-<div class="chat">
-  <div class="head">
-    <div class="head-ava"><img src="/sbw-avatar.png" alt="SBW" /></div>
-    <div>
-      <div class="head-name">SBW Assistent</div>
-      <div class="head-status"><span class="head-dot"></span> Online</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Live auf chatfield-ai.ch
+    </div>
+    <h1 class="hero-title">
+      Der KI-Assistent<br>für <em>SBW</em>
+    </h1>
+    <p class="hero-sub">
+      Beantwortet rund um die Uhr Fragen zu Schulen, Anmeldungen und Standorten — sofort, präzise und im SBW-Ton. Probier es live aus.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">verfügbar</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&lt;2s</div>
+        <div class="stat-label">Antwortzeit</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">SBW-Wissen</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#demo-cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Demo starten
+      </a>
+      <a class="btn-secondary" href="#layers">
+        Wie es funktioniert
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
     </div>
   </div>
-  <div class="msgs" id="msgs">
-    <div class="row-bot">
-      <div class="mini-ava"><img src="/sbw-avatar.png" alt="" /></div>
-      <div class="bubble-bot">Hallo! Ich bin der SBW-Assistent. Wie kann ich dir weiterhelfen?</div>
+  <div class="hero-right">
+    <!-- LIVE CHAT WIDGET -->
+    <div class="chat">
+      <div class="chat-head">
+        <div class="chat-ava"><img src="/sbw-avatar.png" alt="SBW" /></div>
+        <div>
+          <div class="chat-name">SBW Assistent</div>
+          <div class="chat-status"><span class="status-dot"></span>Online – jetzt verfügbar</div>
+        </div>
+      </div>
+      <div class="chat-msgs" id="msgs">
+        <div class="row-bot">
+          <div class="mini-ava"><img src="/sbw-avatar.png" alt="" /></div>
+          <div class="bubble-bot">Hallo! Ich bin der SBW-Assistent. Stell mir eine Frage zu unseren Schulen, Standorten oder der Anmeldung.</div>
+        </div>
+      </div>
+      <div class="chat-chips" id="chips">
+        <div class="chip" onclick="q('Welche Schulen gehören zu SBW?')">Schulen</div>
+        <div class="chip" onclick="q('Wo ist der Hauptsitz?')">Standort</div>
+        <div class="chip" onclick="q('Was ist der Talent-Campus Winterthur?')">Talent-Campus</div>
+        <div class="chip" onclick="q('Wie melde ich mich an?')">Anmeldung</div>
+      </div>
+      <div class="chat-inp">
+        <input class="inp-field" id="inp" placeholder="Deine Frage..." onkeydown="if(event.key==='Enter')send()" autocomplete="off" />
+        <button class="send-btn" onclick="send()" aria-label="Senden">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="chips" id="chips">
-    <div class="chip" onclick="q('Welche Schulen gehören zu SBW?')">Welche Schulen?</div>
-    <div class="chip" onclick="q('Wo ist der Hauptsitz von SBW?')">Standort</div>
-    <div class="chip" onclick="q('Was ist der Talent-Campus Winterthur?')">Talent-Campus</div>
-    <div class="chip" onclick="q('Wie melde ich mich für eine Schule an?')">Anmeldung</div>
-    <div class="chip" onclick="q('Wie kann ich SBW kontaktieren?')">Kontakt</div>
-  </div>
-  <div class="inp-row">
-    <input class="inp" id="inp" placeholder="Deine Frage..." onkeydown="if(event.key==='Enter')send()" autocomplete="off" />
-    <button class="send" onclick="send()" aria-label="Senden">
-      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
   </div>
 </div>
 
-<p class="foot">Powered by <a href="https://chatfield-ai.ch" target="_blank" rel="noopener">chatfield-ai.ch</a></p>
+<!-- FEATURES -->
+<div id="features" class="section-wrap">
+  <div class="features-section">
+    <div class="section-header fade-up">
+      <div class="section-eyebrow">Was der Assistent kann</div>
+      <h2 class="section-title">Gebaut für den SBW-Alltag</h2>
+      <p class="section-sub">Kein Allzweck-Chatbot. Ein Assistent, der weiss, was SBW anbietet — und es klar kommuniziert.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fade-up">
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">Schulen & Programme</div>
+        <div class="feature-desc">Erklärt alle SBW-Schulen, ihre Profile, Abschlüsse und Besonderheiten — sofort abrufbar.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">📍</div>
+        <div class="feature-title">Standortinfos</div>
+        <div class="feature-desc">Hauptsitz, Talent-Campus Winterthur, alle Standorte mit Adresse und Anfahrt.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">Anmeldeprozess</div>
+        <div class="feature-desc">Führt durch den Anmeldeprozess, klärt Voraussetzungen und nennt Deadlines.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-title">Streaming-Antworten</div>
+        <div class="feature-desc">Antworten erscheinen Wort für Wort — fühlt sich an wie ein echtes Gespräch, nicht wie Laden.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Mobil optimiert</div>
+        <div class="feature-desc">Funktioniert auf jedem Gerät. Responsive Design, schnell geladen.</div>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon">🌙</div>
+        <div class="feature-title">Immer verfügbar</div>
+        <div class="feature-desc">Kein Wochenende, keine Öffnungszeiten. Der Assistent antwortet auch nachts um 2 Uhr.</div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- LAYERS: HOW IT WORKS -->
+<div id="layers" class="section-wrap">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Technik erklärt</div>
+    <h2 class="section-title">Von A bis Z — wie es funktioniert</h2>
+    <p class="section-sub">Kein Black-Box-Versprechen. Hier ist, was passiert wenn jemand eine Frage stellt.</p>
+  </div>
+
+  <div class="layers-wrap">
+    <div class="layers-line"></div>
+
+    <div class="layer" data-layer="1">
+      <div class="layer-num-wrap">
+        <div class="layer-num">A</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">Frontend</div>
+        <div class="layer-title">Der Nutzer schreibt eine Frage</div>
+        <div class="layer-desc">Das Chat-Widget läuft direkt auf eurer SBW-Website — keine externe App, kein Login. Der Nutzer tippt seine Frage im Browser.</div>
+        <div class="layer-detail">🌐 HTML + CSS + JavaScript · gehostet auf chatfield-ai.ch (Vercel)</div>
+      </div>
+    </div>
+
+    <div class="layer" data-layer="2">
+      <div class="layer-num-wrap">
+        <div class="layer-num">B</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">API-Aufruf</div>
+        <div class="layer-title">Nachricht geht an den Server</div>
+        <div class="layer-desc">Mit einem HTTP-POST wird die Konversationshistorie (max. 12 Nachrichten) an unsere Serverless-Funktion übermittelt. HTTPS, verschlüsselt, kein Tracking.</div>
+        <div class="layer-detail">📡 POST /api/sbw · JSON body · TLS 1.3 · keine Speicherung</div>
+      </div>
+    </div>
+
+    <div class="layer" data-layer="3">
+      <div class="layer-num-wrap">
+        <div class="layer-num">C</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">System-Prompt</div>
+        <div class="layer-title">SBW-Wissen wird geladen</div>
+        <div class="layer-desc">Jede Anfrage bekommt einen präzisen System-Prompt: wer SBW ist, welche Schulen es gibt, Standorte, Anmeldeprozesse — alles. Das ist das "Gehirn" des Assistenten.</div>
+        <div class="layer-detail">📄 System-Prompt: ~800 Tokens SBW-Kontext · von Chatfield gepflegt</div>
+      </div>
+    </div>
+
+    <div class="layer" data-layer="4">
+      <div class="layer-num-wrap">
+        <div class="layer-num">D</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">KI-Modell</div>
+        <div class="layer-title">Claude von Anthropic verarbeitet die Frage</div>
+        <div class="layer-desc">Anthropic Claude — eines der leistungsfähigsten Sprachmodelle der Welt — generiert die Antwort. Entwickelt mit Fokus auf Sicherheit und Präzision.</div>
+        <div class="layer-detail">🤖 Claude claude-haiku-3-5 · Anthropic API · Streaming aktiviert</div>
+      </div>
+    </div>
+
+    <div class="layer" data-layer="5">
+      <div class="layer-num-wrap">
+        <div class="layer-num">E</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">Streaming</div>
+        <div class="layer-title">Antwort kommt Token für Token</div>
+        <div class="layer-desc">Statt zu warten bis die ganze Antwort fertig ist, schickt der Server jedes Wort sofort über eine SSE-Verbindung. Das gibt das lebendige Schreibgefühl.</div>
+        <div class="layer-detail">⚡ Server-Sent Events (SSE) · content_block_delta events · ReadableStream</div>
+      </div>
+    </div>
+
+    <div class="layer" data-layer="6">
+      <div class="layer-num-wrap">
+        <div class="layer-num">F</div>
+      </div>
+      <div class="layer-body">
+        <div class="layer-tag">Darstellung</div>
+        <div class="layer-title">Text erscheint im Widget</div>
+        <div class="layer-desc">Das Frontend liest den Stream aus und fügt jeden neuen Text-Chunk direkt ins Chat-Bubble ein. Der Hase animiert sich — der Nutzer sieht eine lebendige Konversation.</div>
+        <div class="layer-detail">🎨 DOM-Update per JS · bubble.textContent live geupdated · Avatar-Animation</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="section-wrap">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Was es bringt</div>
+    <h2 class="section-title">Weniger Aufwand. Mehr Reichweite.</h2>
+    <p class="section-sub">Ein Assistent, der nie schläft, nie wartet und nie ungeduldig wird.</p>
+  </div>
+  <div class="results-grid">
+    <div class="result-card fade-up">
+      <div class="result-num">24<span>/7</span></div>
+      <div class="result-label">Beantwortet Anfragen — auch nachts, am Wochenende und in den Ferien</div>
+    </div>
+    <div class="result-card fade-up">
+      <div class="result-num">&lt;<span>2</span>s</div>
+      <div class="result-label">Antwortzeit im Schnitt — kein Laden, kein Warten auf Rückmeldung</div>
+    </div>
+    <div class="result-card fade-up">
+      <div class="result-num">∞</div>
+      <div class="result-label">Gleichzeitige Gespräche — der Assistent skaliert ohne Mehrkosten</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div id="demo-cta" class="section-wrap">
+  <div class="cta-block fade-up">
+    <h2 class="section-title">Interesse an einem Pilot?</h2>
+    <p class="section-sub">Wir richten einen massgeschneiderten Assistenten für SBW ein — mit eurem Wissen, eurem Branding, eurer Domain. Schnell umgesetzt, kostenlos ausprobiert.</p>
+    <div class="cta-actions">
+      <a class="cta-btn cta-btn-primary" href="mailto:lev@chatfield-ai.ch?subject=SBW%20Assistent%20–%20Interesse">
+        Gespräch anfragen
+      </a>
+      <a class="cta-btn cta-btn-secondary" href="https://chatfield-ai.ch" target="_blank" rel="noopener">
+        chatfield-ai.ch
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Demo by <a href="https://chatfield-ai.ch" target="_blank" rel="noopener">chatfield-ai.ch</a>
+  &nbsp;·&nbsp;
+  Powered by Claude (Anthropic)
+  &nbsp;·&nbsp;
+  Vertraulich – für SBW
+</footer>
+
+<!-- SCRIPTS -->
 <script>
+// ─── CHAT LOGIC ───
 const msgsEl = document.getElementById('msgs');
 let history = [], busy = false;
 const AVA = '<div class="mini-ava"><img src="/sbw-avatar.png" alt=""></div>';
-const headAva = document.querySelector('.head-ava img');
+const headAva = document.querySelector('.chat-ava img');
+
 function reactAvatar() {
   if (!headAva) return;
-  headAva.classList.remove('react'); void headAva.offsetWidth; headAva.classList.add('react');
+  headAva.classList.remove('react');
+  void headAva.offsetWidth;
+  headAva.classList.add('react');
   setTimeout(() => headAva.classList.remove('react'), 800);
 }
-function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 function addMsg(text, who) {
   const row = document.createElement('div');
-  if (who === 'user') { row.className = 'row-user'; row.innerHTML = '<div class="bubble-user">'+esc(text)+'</div>'; }
-  else { row.className = 'row-bot'; row.innerHTML = AVA + '<div class="bubble-bot">'+esc(text)+'</div>'; }
-  msgsEl.appendChild(row); msgsEl.scrollTop = msgsEl.scrollHeight;
+  if (who === 'user') {
+    row.className = 'row-user';
+    row.innerHTML = '<div class="bubble-user">' + esc(text) + '</div>';
+  } else {
+    row.className = 'row-bot';
+    row.innerHTML = AVA + '<div class="bubble-bot">' + esc(text) + '</div>';
+  }
+  msgsEl.appendChild(row);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
   return row;
 }
 function showTyping() {
-  const row = document.createElement('div'); row.className = 'row-bot'; row.id = 'typing';
+  const row = document.createElement('div');
+  row.className = 'row-bot'; row.id = 'typing';
   row.innerHTML = AVA + '<div class="bubble-bot"><div class="typing-wrap"><span></span><span></span><span></span></div></div>';
-  msgsEl.appendChild(row); msgsEl.scrollTop = msgsEl.scrollHeight;
+  msgsEl.appendChild(row);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
 }
-function q(text){ document.getElementById('inp').value = text; send(); }
+function q(text) { document.getElementById('inp').value = text; send(); }
 
 async function send() {
   if (busy) return;
   const inp = document.getElementById('inp');
-  const text = inp.value.trim(); if (!text) return;
+  const text = inp.value.trim();
+  if (!text) return;
   inp.value = ''; busy = true;
   addMsg(text, 'user');
   history.push({ role: 'user', content: text });
@@ -150,7 +819,8 @@ async function send() {
   showTyping();
   try {
     const res = await fetch('/api/sbw', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: history })
     });
     if (!res.ok) throw new Error('bad');
@@ -166,10 +836,17 @@ async function send() {
         if (!line.startsWith('data: ')) continue;
         const p = line.slice(6).trim();
         if (p === '[DONE]') continue;
-        let ev; try { ev = JSON.parse(p); } catch(e){ continue; }
+        let ev; try { ev = JSON.parse(p); } catch(e) { continue; }
         if (ev.type === 'content_block_delta' && ev.delta && ev.delta.text) {
-          if (!bubble) { const t = document.getElementById('typing'); if (t) t.remove(); bubble = addMsg('', 'bot').querySelector('.bubble-bot'); reactAvatar(); }
-          full += ev.delta.text; bubble.textContent = full; msgsEl.scrollTop = msgsEl.scrollHeight;
+          if (!bubble) {
+            const t = document.getElementById('typing');
+            if (t) t.remove();
+            bubble = addMsg('', 'bot').querySelector('.bubble-bot');
+            reactAvatar();
+          }
+          full += ev.delta.text;
+          bubble.textContent = full;
+          msgsEl.scrollTop = msgsEl.scrollHeight;
         }
       }
     }
@@ -182,6 +859,21 @@ async function send() {
   }
   busy = false;
 }
+
+// ─── SCROLL ANIMATIONS ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+document.querySelectorAll('.layer').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.1) + 's';
+  observer.observe(el);
+});
 </script>
 </body>
 </html>
