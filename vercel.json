@@ -3,6 +3,7 @@
     { "source": "/zahnarzt-demo", "destination": "/zahnarzt-demo.html" },
     { "source": "/fitness-demo", "destination": "/fitness-demo.html" },
     { "source": "/hotel-demo", "destination": "/hotel-demo.html" },
-    { "source": "/garage-demo", "destination": "/garage-demo.html" }
+    { "source": "/garage-demo", "destination": "/garage-demo.html" },
+    { "source": "/sbw", "destination": "/sbw.html" }
   ]
 }
