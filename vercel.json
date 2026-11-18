@@ -4,6 +4,7 @@
     { "source": "/fitness-demo", "destination": "/fitness-demo.html" },
     { "source": "/hotel-demo", "destination": "/hotel-demo.html" },
     { "source": "/garage-demo", "destination": "/garage-demo.html" },
-    { "source": "/sbw", "destination": "/sbw.html" }
+    { "source": "/sbw", "destination": "/sbw.html" },
+    { "source": "/hasler-demo", "destination": "/hasler-demo.html" }
   ]
 }
